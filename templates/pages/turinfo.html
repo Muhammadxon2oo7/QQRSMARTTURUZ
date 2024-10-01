@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{%  static  'css/main.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>{{places.title}}</title>
+</head>
+<style>
+    swiper-container {
+        width: auto;
+        height: 400px;
+        margin-bottom: 20px;
+    }
+
+    swiper-slide {
+        background-position: center;
+        background-size: cover;
+    }
+
+    swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 400px;
+    }
+</style>
+
+<body>
+    {% include 'header.html' %}
+
+
+    <section class="turinfo">
+        <div class="container">
+            <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" space-between="30"
+                effect="fade" loop="true" autoplay-delay="2500" autoplay-disable-on-interaction="false"
+                 navigation="true">{% for image in places.images.all %}
+                <swiper-slide>
+
+
+                    <img class="swiperr-slide" src="{{ image.image.url }}" alt="">
+
+
+                </swiper-slide> {% endfor %}
+
+            </swiper-container>
+            <div class="leftcontent">
+                <h2>
+                    {{places.title}}
+                </h2>
+                <p>
+                    {{places.text}}
+                </p>
+                <div class="details">
+                    <div class="more__info">
+                        <div class="time">
+                            <img src="{% static 'img/turinfo/time.png' %}" alt="">
+                            <p>{{places.duration}} kun</p>
+                        </div>
+                        <div class="time">
+                            <img src="{% static 'img/turinfo/member.png' %}" alt="">
+                            <p>{{places.places_count}} ta </p>
+                        </div>
+                        <div class="time">
+                            <img src="{% static 'img/turinfo/money.png' %}" alt="">
+                            <p>{{places.price}} $</p>
+                        </div>
+                        <div class="time">
+                            <img src="{% static 'img/turinfo/eye.png' %}" alt="">
+                            <p>{{places.views}}</p>
+                        </div>
+                        <div class="star__panel">
+                            <form method="POST"  action="{% url 'rate_place' places.id %}" id="ratingForm">
+                               <div class="strw rate">
+                                {% csrf_token %}
+                                {% for star in stars %}
+                                <input type="radio" id="star{{star}}" name="rate" value="{{star}}" />
+                                <label for="star{{star}}" title="{{star}} stars"></label>
+                                {% endfor %}
+                               </div>
+                                <!-- <button type="submit">Baholash</button> -->
+                            </form>
+                        </div>
+                        <!-- <p>Ko'rishlar soni: {{ places.views }}</p> -->
+                    </div>
+                    <button class="shopbtn"><a style="width: 100%;
+                    height: 100%; display: flex;
+                    justify-content: center; align-items: center;" href="tel:+{{places.phone_number}}">Bog'lanish</a></button>
+                </div>
+
+            </div>
+            
+            <p>O'rtacha yulduzlar: {{ places.average_rating }}</p>
+            <div class="containerform">
+
+
+                <h3 class="h3chat">Savol va takliflar</h3>
+                <ul class="scrollul">
+                    {% for comment in comments %}
+                    <li class="{% if comment.user == request.user %}bright{% else %}bleft{% endif %}">
+                        <div class="comment__text__wrapper ">
+                            <div class="allcomment__wrapper">
+                                <div class="comment__buble {% if comment.user == request.user %}right{% else %}left{% endif %}">
+                                {% for i in ratings_dict %}
+                                <span>⭐</span>
+                                {% endfor %}
+                                <h3 class="comment__users__name">{{ comment.user.first_name }}</h3>
+                                <p class="comment__text">{{ comment.text }}</p>
+                                <button class="replybtn" onclick="setParentId('{{ comment.id }}');"><a href="#txtarea">Javob berish</a></button>
+                            </div>
+                            <p class="comment__time">{{ comment.created_at }}</p>
+                            {% for reply in comment.replies.all %}
+                            <!-- <div class="allcomment__wrapper">
+                                <div class="comment__buble">
+                                   
+                                    
+                                </div>
+                            </div> -->
+                            <div class="allcomment__wrapper ">
+                                <div class="comment__buble color {% if comment.user == request.user %}right{% else %}left{% endif %}">
+                                <h2 class="comment__users__name">{{ reply.user.first_name }}</h2>
+                                <p class="comment__text">{{ reply.text }}</p>
+                            </div>
+                            <p class="comment__time">{{ reply.created_at }}</p>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </li>
+                    {% empty %}
+                    <li class="nocomment">Hozircha sharhlar mavjud emas.</li>
+                    {% endfor %}
+                </ul>
+                {% if user.is_authenticated %}
+                <div class="comment-wrapper">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <textarea id="txtarea" name="comment" rows="4" cols="50"
+                            placeholder="Sharhingizni kiriting..."></textarea><br>
+                        <input type="hidden" name="parent_id" id="parent_id" value="">
+                        <button type="submit"><img class="btnimg" src="{% static 'img/turinfo/send.png' %}" alt="">
+                            </button>
+                    </form>
+                </div>
+                {% else %}
+                <p>Sharh qoldirish uchun <a style="color: blue;" href="{% url 'register' %}">tizimga kiring</a>.</p>
+                {% endif %}
+            </div>
+
+
+        </div>
+        </div>
+    </section>
+    {% include 'footer.html' %}
+    <script>
+
+        let header = document.getElementById('main-header')
+        header.style.backgroundColor = "#9BBAD3"
+        header.style.position = 'fixed'
+        function setParentId(parentId) {
+            document.getElementById('parent_id').value = parentId;
+        }
+        document.querySelectorAll('.rate input[type="radio"]').forEach(radio => {
+  // Radio tugma tanlanganda formani yuborish
+  radio.addEventListener('change', function() {
+    document.getElementById('ratingForm').submit(); // Formani yuborish
+  });
+});
+
+// Barcha label elementlar uchun click event'ni qo'shish
+document.querySelectorAll('.rate label').forEach(label => {
+  label.addEventListener('click', function() {
+    // Label bilan bog'liq radio tugmani topamiz
+    const radioId = this.getAttribute('for');
+    const radioElement = document.getElementById(radioId);
+
+    // Agar radio element mavjud bo'lsa, uni tanlaymiz va formani yuboramiz
+    if (radioElement) {
+      radioElement.checked = true; // Radio tugmani tanlaymiz
+      radioElement.dispatchEvent(new Event('change')); // Change hodisasini chaqiramiz
+    }
+  });
+});
+    </script>
+    <!-- <script src="{% static 'app.js' %}"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+</body>
+
+</html>

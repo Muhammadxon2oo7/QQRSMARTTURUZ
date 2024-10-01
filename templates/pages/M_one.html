@@ -1,0 +1,55 @@
+<!DOCTYPE html>{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{%  static  'css/main.css' %}">
+
+  <title>{{ category.name }}</title>
+</head>
+<style>
+
+</style>
+
+<body>
+  {% include 'header.html' %}
+
+  <section class="body">
+    <div class="container">
+      <!-- 1 -->
+      {% if articles %}
+      {% for article in articles %}
+      <div id="first" class="pannel">
+        <div id="text" class="pannel-item">
+          <div class="caption">
+            <h3>{{ article.title }}</h3>
+            <hr>
+          </div>
+          <p class="description">{{ article.text }}</p>
+        </div>
+
+        {% if article.img %}
+        <div id="image-first" class="pannelitem" style="background-image: url('{{ article.img.url }}');">
+          <div class="triangle-right"></div>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+      {% else %}
+        <p style="color: red;">Bu kategoriya uchun maqolalar mavjud emas.</p>
+      {% endif %}
+    </div>
+    {% include 'footer.html' %}
+
+  </section>
+  <script>
+    let header=document.getElementById('main-header')
+    header.style.backgroundColor="#9BBAD3"
+    header.style.position='fixed'
+  </script>
+    <script src="{% static 'app.js' %}"></script>
+  
+</body>
+
+</html>

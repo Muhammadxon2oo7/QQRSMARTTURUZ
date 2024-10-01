@@ -1,0 +1,162 @@
+{% load i18n %}
+{% load static %}
+
+{% block header %}
+<style>
+        .admin__tools {
+        width: auto;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .admin__opntool {
+        position: absolute;
+        left: 50%;
+        top: 30px;
+        background-color: rgb(84, 73, 135);
+        transform: translateX(-50%);
+        padding: 5px;
+        background-color: #11111120;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 8px #ffffff25;
+        display: none;
+    }
+
+    .regoption {
+        display: block;
+    }
+
+    .admin__opntool button {
+        all: unset;
+        width: 100%;
+        height: auto;
+        background-color: red;
+    }
+
+    .username {
+        width: 100%;
+        color: white;
+        /* box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset; */
+    }
+</style>
+<header id="main-header">
+    <div class="container">
+        <a href="{% url 'index' %}" class="logo__Wrapper">
+            <img src="{% static  'img/nlogo.png' %}" alt="Karakalpakistan">
+        </a>
+        
+        
+        
+        <div class="navlang">
+            <div class="nav__Wrapper">
+                <ul>
+    
+                    <li class="dropdown">
+                        <button class="dropbtn"><a href="{% url 'index' %}" id="mainPage">Bosh sahifa</a>
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a id="dhudud" href="{% url 'index' %}#hudud">Hududlar </a>
+                            <a id="dmashgulot" href="{% url 'index' %}#mashgulotlar">Mashg'ulotlar
+                            </a>
+                            <a id="dtur" href="{% url 'index' %}#QQR">QQR Tur</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <button class="dropbtn" id="contact">Biz haqimizda
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a id="djamoa" href="#"> BIZNING JAMOA </a>
+    
+                            <a id="dhamkor" href="#">HAMKORLARIMIZ</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <button class="dropbtn" id="Services">Xizmatlar
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a id="dBron" href="#">BRON QILISH</a>
+                            <a id="dtarnsport" href="#">TRANSPORT</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <button class="dropbtn" id="Manuals">Qo'llanmalar
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a id="dMaslahatlar" href="#">MASLAHATLAR</a>
+                            <a id="dKitob" href="#"> KITOB VA JURNALLAR
+                            </a>
+                            <a id="dstatistika" href="#">STATISTIKA
+                            </a>
+                        </div>
+                    </li>
+                    
+    
+                    <!-- Backendga yuboriladigan yashirin forma -->
+                    <form id="languageForm" action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <!-- Hozirgi sahifani saqlab qolish uchun -->
+                        <input type="hidden" id="languageInput" name="language"> <!-- Tanlangan til -->
+                    </form>
+    
+                    </li>
+                    <li class="li register">
+                        {% if user.is_authenticated %}
+                        <div id="showadm" class="admin__tools">
+                            <img src="{% static  'img/register.svg' %}" alt="">
+                            <div id="admoption" class="admin__opntool">
+                                <p class="username">{{user.first_name}}</p>
+                                <button>
+                                    <a style="width: 100%; height: 100%;
+                                    text-align: center;" class="loga" href="{% url 'logout' %}">log</a>
+                                </button>
+                            </div>
+                        </div>
+                        {% else %}
+                        <a href="{% url 'register' %}"><img src="{% static  'img/register.svg' %}" alt=""></a>
+                        {% endif %}
+                    </li>
+    
+                </ul>
+            </div>
+            <div class="lang" id="langbtn">
+                <img id="langimg" src="{% static 'img/lang/lang.png' %}" alt="Language">
+                <div class="lang-open" id="langopen">
+                    <!-- Tilni o'zgartiruvchi tugmalar -->
+                    <button value="uz" onclick="changeLanguage('uz')">
+                        <img src="{% static 'img/lang/uz.png' %}" alt="Uzbek"> Uz
+                    </button>
+                    <button value="en" onclick="changeLanguage('en')">
+                        <img src="{% static 'img/lang/eng.png' %}" alt="English"> Eng
+                    </button>
+                    <button value="ru" onclick="changeLanguage('ru')">
+                        <img src="{% static 'img/lang/ru.png' %}" alt="Russian"> Ru
+                    </button>
+                </div>
+            </div>
+            <div class="ham__Wrapper">
+                <img src="{% static 'img/hamburger.svg' %}" alt="===">
+            </div>
+        </div>
+
+    </div>
+</header>
+<script src="{% static 'app.js' %}"></script>
+<script>
+    const flagMap = {
+        'uz': "{% static 'img/lang/uz.png' %}",
+        'en': "{% static 'img/lang/eng.png' %}",
+        'ru': "{% static 'img/lang/ru.png' %}"
+    };
+    let showadm = document.getElementById('showadm')
+    let admoption = document.getElementById('admoption')
+    showadm.addEventListener("click", () => {
+        admoption.classList.toggle('regoption')
+    })
+
+</script>
+{% endblock %}

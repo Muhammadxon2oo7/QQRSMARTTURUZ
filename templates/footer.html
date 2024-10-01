@@ -1,0 +1,38 @@
+{% block footer %} 
+{% load static %} 
+<footer id="footer"> 
+        <div class="col col1"> 
+            <h3>Karakalpakistan</h3> 
+            <!-- <p>Jamoa E-investment <code>MCHJ</code> </p> --> 
+            <div class="social"> 
+                <a href="#" target="_blank" class="link"><img src="{% static 'img/icons/telegram.png' %}" alt="" /></a> 
+                <a href="#" target="_blank" class="link"><img src="{% static 'img/icons/instagram.png'%} " alt="" /></a> 
+                <a href="#" target="_blank" class="link"><img src="{% static 'img/icons/facebook.png'%}" alt="" /></a> 
+            </div> 
+            <p style="color: #818181; font-size: smaller" id="secure">2024 © Barcha huquqlar himoyalangan</p> 
+        </div> 
+        <div class="col col2"> 
+            <p><a id="fmainPage" href="{% url 'index' %}">Bosh sahifa 
+                </a></p> 
+ 
+            <p> 
+                <a id="fhudud" href="{% url 'index' %}#hudud"> Hududlar </a> 
+ 
+            </p> 
+            <p> 
+                <a id="fmashgulot" href="{% url 'index' %}#mashgulotlar">Mashg'ulotlar 
+                </a> 
+            </p> 
+            <p> 
+                <a id="ftur" href="{% url 'index' %}#QQR">QQR Tur</a> 
+ 
+            </p> 
+        </div> 
+        <div class="col col3"> 
+            <p id="fcontact">Biz Xaqimizda</p> 
+            <p id="fServices">Xizmatlar</p> 
+            <p id="fManuals">Qo'llanmalar</p> 
+        </div> 
+        <div class="backdrop"></div> 
+</footer> 
+{% endblock %}
