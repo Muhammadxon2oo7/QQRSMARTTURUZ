@@ -324,7 +324,7 @@ header {
   -webkit-transition: background-color 0.3s ease;
   transition: background-color 0.3s ease;
   background-color: transparent;
-  position: absolute; /* Boshlang‘ich holatda header birinchi bo‘lim bilan birga skroll bo‘ladi */
+  position: absolute;
   top: 0;
   width: 100%;
   -webkit-transition: all 0.3s ease;
@@ -354,10 +354,61 @@ header .container .logo__Wrapper img {
   -webkit-filter: drop-shadow(rgba(0, 0, 0, 0.24) 0px 3px 8px);
           filter: drop-shadow(rgba(0, 0, 0, 0.24) 0px 3px 8px);
 }
-header .container .nav__Wrapper {
+header .container .navlang {
+  width: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 10px;
+}
+header .container .navlang .nav__Wrapper {
   display: none;
 }
-header .container .display {
+header .container .navlang .lang {
+  width: auto;
+  height: auto;
+  margin-right: 15px;
+  position: relative;
+  margin: 0 auto;
+  right: 0;
+}
+header .container .navlang .lang .lang-open {
+  width: auto;
+  position: absolute;
+  left: 0;
+  top: 25px;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
+  padding: 20px;
+  background-color: #fff;
+  visibility: hidden;
+}
+header .container .navlang .lang .lang-open button {
+  all: unset;
+  width: 60px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  cursor: pointer;
+}
+header .container .navlang .lang .lang-open button:not(:last-child) {
+  margin-bottom: 5px;
+}
+header .container .navlang .lang .lang-open button:hover {
+  background-color: #6a708e;
+  width: 100%;
+}
+header .container .navlang .lang .active-lang-open {
+  visibility: visible;
+}
+header .container .navlang .display {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -366,14 +417,14 @@ header .container .display {
   left: 0;
   width: 100%;
 }
-header .container .display ul {
+header .container .navlang .display ul {
   width: 100%;
   padding: 30px;
   background-color: #fff;
   -webkit-box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.2);
           box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.2);
 }
-header .container .display ul li {
+header .container .navlang .display ul li {
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -382,24 +433,24 @@ header .container .display ul li {
       -ms-flex-pack: center;
           justify-content: center;
 }
-header .container .display ul li:not(:last-child) {
+header .container .navlang .display ul li:not(:last-child) {
   margin-bottom: 10px;
 }
-header .container .display ul li a {
+header .container .navlang .display ul li a {
   font-weight: 400;
   font-size: 16px;
   line-height: 125%;
   text-transform: uppercase;
   color: #6a708e;
 }
-header .container .display ul li:hover a {
+header .container .navlang .display ul li:hover a {
   text-shadow: 1px 2px 5px rgba(0, 0, 0, 0.31);
 }
-header .container .display ul .dropdown {
+header .container .navlang .display ul .dropdown {
   float: left;
   overflow: hidden;
 }
-header .container .display ul .dropdown .dropbtn {
+header .container .navlang .display ul .dropdown .dropbtn {
   border: none;
   outline: none;
   font-weight: 400;
@@ -409,7 +460,7 @@ header .container .display ul .dropdown .dropbtn {
   color: #6a708e;
   background-color: transparent;
 }
-header .container .display ul .dropdown-content {
+header .container .navlang .display ul .dropdown-content {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
@@ -418,7 +469,7 @@ header .container .display ul .dropdown-content {
           box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
-header .container .display ul .dropdown-content a {
+header .container .navlang .display ul .dropdown-content a {
   float: none;
   color: black;
   padding: 12px 16px;
@@ -426,11 +477,46 @@ header .container .display ul .dropdown-content a {
   display: block;
   text-align: left;
 }
-header .container .display ul .dropdown-content a:hover {
+header .container .navlang .display ul .dropdown-content a:hover {
   background-color: #ddd;
 }
-header .container .display ul .dropdown:hover .dropdown-content {
+header .container .navlang .display ul .dropdown:hover .dropdown-content {
   display: block;
+}
+header .container .navlang .display ul .admin__tools {
+  width: auto;
+  cursor: pointer;
+  position: relative;
+}
+header .container .navlang .display ul .admin__opntool {
+  position: absolute;
+  left: 50%;
+  top: 30px;
+  background-color: rgb(84, 73, 135);
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
+  padding: 5px;
+  background-color: rgba(17, 17, 17, 0.1254901961);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  -webkit-box-shadow: 0 0 8px rgba(255, 255, 255, 0.1450980392);
+          box-shadow: 0 0 8px rgba(255, 255, 255, 0.1450980392);
+  display: none;
+}
+header .container .navlang .display ul .regoption {
+  display: block;
+}
+header .container .navlang .display ul .admin__opntool button {
+  all: unset;
+  width: 100%;
+  height: auto;
+  background-color: red;
+}
+header .container .navlang .display ul .username {
+  width: 100%;
+  color: white;
+  /* box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset; */
 }
 
 @media only screen and (min-width: 992px) {
@@ -450,10 +536,16 @@ header .container .display ul .dropdown:hover .dropdown-content {
     width: 140px;
     height: 90px;
   }
-  header .container .nav__Wrapper {
+  header .container .navlang {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: auto;
+  }
+  header .container .navlang .nav__Wrapper {
     display: block;
   }
-  header .container .nav__Wrapper ul {
+  header .container .navlang .nav__Wrapper ul {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -462,26 +554,88 @@ header .container .display ul .dropdown:hover .dropdown-content {
             align-items: center;
     height: 100%;
   }
-  header .container .nav__Wrapper ul li {
+  header .container .navlang .nav__Wrapper ul li {
     padding: 0;
   }
-  header .container .nav__Wrapper ul li a {
+  header .container .navlang .nav__Wrapper ul li a {
     font-weight: 400;
     font-size: 16px;
     line-height: 125%;
     text-transform: uppercase;
     color: #fff;
   }
-  header .container .nav__Wrapper ul li:not(:last-child) {
+  header .container .navlang .nav__Wrapper ul li:not(:last-child) {
     margin-right: 30px;
   }
-  header .container .nav__Wrapper ul .lang {
+  header .container .navlang .nav__Wrapper ul .register {
+    width: 30px;
+    height: 100%;
+  }
+  header .container .navlang .nav__Wrapper ul .register a {
+    width: 20px;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  header .container .navlang .nav__Wrapper ul .register a img {
+    width: 20px;
+    height: 20px;
+  }
+  header .container .navlang .nav__Wrapper ul .dropdown {
+    float: left;
+    overflow: hidden;
+  }
+  header .container .navlang .nav__Wrapper ul .dropdown .dropbtn {
+    border: none;
+    outline: none;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 125%;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 0;
+    background-color: transparent;
+  }
+  header .container .navlang .nav__Wrapper ul .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 140px;
+    -webkit-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  header .container .navlang .nav__Wrapper ul .dropdown-content a {
+    float: none;
+    padding: 10px 10px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    color: gray;
+  }
+  header .container .navlang .nav__Wrapper ul .dropdown-content a:hover {
+    color: #000;
+  }
+  header .container .navlang .nav__Wrapper ul .dropdown-content a:hover {
+    background-color: #ddd;
+  }
+  header .container .navlang .nav__Wrapper ul .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  header .container .navlang .lang {
     width: auto;
     height: auto;
     margin-right: 15px;
     position: relative;
   }
-  header .container .nav__Wrapper ul .lang .lang-open {
+  header .container .navlang .lang .lang-open {
     width: auto;
     position: absolute;
     left: 0;
@@ -493,7 +647,7 @@ header .container .display ul .dropdown:hover .dropdown-content {
     background-color: #fff;
     visibility: hidden;
   }
-  header .container .nav__Wrapper ul .lang .lang-open button {
+  header .container .navlang .lang .lang-open button {
     all: unset;
     width: 60px;
     display: -webkit-box;
@@ -507,79 +661,17 @@ header .container .display ul .dropdown:hover .dropdown-content {
             justify-content: space-between;
     cursor: pointer;
   }
-  header .container .nav__Wrapper ul .lang .lang-open button:not(:last-child) {
+  header .container .navlang .lang .lang-open button:not(:last-child) {
     margin-bottom: 5px;
   }
-  header .container .nav__Wrapper ul .lang .lang-open button:hover {
+  header .container .navlang .lang .lang-open button:hover {
     background-color: #6a708e;
     width: 100%;
   }
-  header .container .nav__Wrapper ul .lang .active-lang-open {
+  header .container .navlang .lang .active-lang-open {
     visibility: visible;
   }
-  header .container .nav__Wrapper ul .register {
-    width: 30px;
-    height: 100%;
-  }
-  header .container .nav__Wrapper ul .register a {
-    width: 20px;
-    height: 100%;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-  }
-  header .container .nav__Wrapper ul .register a img {
-    width: 20px;
-    height: 20px;
-  }
-  header .container .nav__Wrapper ul .dropdown {
-    float: left;
-    overflow: hidden;
-  }
-  header .container .nav__Wrapper ul .dropdown .dropbtn {
-    border: none;
-    outline: none;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 125%;
-    text-transform: uppercase;
-    color: #fff;
-    padding: 0;
-    background-color: transparent;
-  }
-  header .container .nav__Wrapper ul .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 140px;
-    -webkit-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-  }
-  header .container .nav__Wrapper ul .dropdown-content a {
-    float: none;
-    padding: 10px 10px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-    color: gray;
-  }
-  header .container .nav__Wrapper ul .dropdown-content a:hover {
-    color: #000;
-  }
-  header .container .nav__Wrapper ul .dropdown-content a:hover {
-    background-color: #ddd;
-  }
-  header .container .nav__Wrapper ul .dropdown:hover .dropdown-content {
-    display: block;
-  }
-  header .container .ham__Wrapper {
+  header .container .navlang .ham__Wrapper {
     display: none;
   }
 }
@@ -607,14 +699,27 @@ header .container .display ul .dropdown:hover .dropdown-content {
           align-items: center;
   position: relative;
 }
-.banner .container p {
+.banner .container .bannertxt {
   font-size: 32px;
   text-align: center;
   color: #c9c8c8;
   text-shadow: 1px 1px 1px #919191, 1px 2px 1px #fff, 1px 3px 1px #403e3d, 1px 4px 1px #473727, 1px 5px 1px #473727, 1px 6px 1px #473727, 1px 9px 1px #473727, 1px 10px 1px #919191, 1px 18px 6px rgba(16, 16, 16, 0.4), 1px 22px 10px rgba(16, 16, 16, 0.2), 1px 25px 35px rgba(16, 16, 16, 0.2), 1px 30px 60px rgba(16, 16, 16, 0.4);
 }
-.banner .container p span {
+.banner .container .spantxt {
+  width: 100%;
+  text-align: center;
   font-size: 18px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #EECD86;
+  z-index: 10;
+  position: relative;
+  text-shadow: 1px solid red;
+  text-shadow: 1px 1px 1px #919191, 1px 2px 1px #fff, 1px 3px 1px #403e3d, 1px 4px 1px #473727, 1px 5px 1px #473727, 1px 6px 1px #473727, 1px 9px 1px #473727, 1px 10px 1px #919191, 1px 18px 6px rgba(16, 16, 16, 0.4), 1px 22px 10px rgba(16, 16, 16, 0.2), 1px 25px 35px rgba(16, 16, 16, 0.2), 1px 30px 60px rgba(16, 16, 16, 0.4);
 }
 
 @media only screen and (min-width: 990px) {
@@ -624,7 +729,7 @@ header .container .display ul .dropdown:hover .dropdown-content {
   .banner .container div {
     width: 100%;
   }
-  .banner .container div p {
+  .banner .container div .bannertxt {
     width: 100%;
     font-size: 48px;
     color: #fff;
@@ -644,10 +749,10 @@ header .container .display ul .dropdown:hover .dropdown-content {
     text-shadow: 1px 1px 1px #919191, 1px 2px 1px #fff, 1px 3px 1px #403e3d, 1px 4px 1px #473727, 1px 5px 1px #473727, 1px 6px 1px #473727, 1px 9px 1px #473727, 1px 10px 1px #919191, 1px 18px 6px rgba(16, 16, 16, 0.4), 1px 22px 10px rgba(16, 16, 16, 0.2), 1px 25px 35px rgba(16, 16, 16, 0.2), 1px 30px 60px rgba(16, 16, 16, 0.4);
     font-size: 72px;
   }
-  .banner .container div span {
+  .banner .container div .spantxt {
     width: 100%;
     text-align: center;
-    font-size: 42px;
+    font-size: 32px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -1157,7 +1262,7 @@ hr {
   grid-template-columns: 1fr;
   gap: 15px;
 }
-.pakets .container .content .cards__wrapper .card {
+.pakets .container .content .cards__wrapper .cardd {
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1169,16 +1274,16 @@ hr {
   -webkit-transition: 0.5s;
   transition: 0.5s;
   border-radius: 10px;
+  overflow: hidden;
 }
-.pakets .container .content .cards__wrapper .card img {
+.pakets .container .content .cards__wrapper .cardd img {
   width: 100%;
-  height: 150px;
-  border-radius: 10px 0 0 10px;
+  height: 300px;
 }
-.pakets .container .content .cards__wrapper .card .info {
+.pakets .container .content .cards__wrapper .cardd .info {
   padding: 5px;
 }
-.pakets .container .content .cards__wrapper .card .info .title {
+.pakets .container .content .cards__wrapper .cardd .info .title {
   font-size: 18px;
   text-align: left;
   margin: 0;
@@ -1192,23 +1297,23 @@ hr {
   margin-bottom: 6px;
   color: #fff;
 }
-.pakets .container .content .cards__wrapper .card .info p {
+.pakets .container .content .cards__wrapper .cardd .info p {
   text-align: center;
   font-size: 13px;
   color: #ffffff;
 }
-.pakets .container .content .cards__wrapper .card .apply__btn {
+.pakets .container .content .cards__wrapper .cardd .apply__btn {
   width: 100%;
   height: 60px;
   background-color: dodgerblue;
   border: none;
   cursor: pointer;
 }
-.pakets .container .content .cards__wrapper .card .apply__btn img {
+.pakets .container .content .cards__wrapper .cardd .apply__btn img {
   width: 30px;
   height: 30px;
 }
-.pakets .container .content .cards__wrapper .card:hover {
+.pakets .container .content .cards__wrapper .cardd:hover {
   -webkit-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.31);
   box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.31);
 }
@@ -1218,9 +1323,6 @@ hr {
     width: 100%;
     padding-top: 100px;
     padding-bottom: 100px;
-  }
-  .pakets .container {
-    width: 100%;
   }
   .pakets .container .title {
     display: -webkit-box;
@@ -1259,7 +1361,7 @@ hr {
     grid-template-columns: 1fr;
     gap: 15px;
   }
-  .pakets .container .content .cards__wrapper .card {
+  .pakets .container .content .cards__wrapper .cardd {
     width: 100%;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -1270,14 +1372,16 @@ hr {
     -webkit-transition: 0.5s;
     transition: 0.5s;
     border-radius: 10px;
+    overflow: hidden;
   }
-  .pakets .container .content .cards__wrapper .card .swiper-slide-active, .pakets .container .content .cards__wrapper .card .swiper-wrapper {
-    width: 500px;
+  .pakets .container .content .cards__wrapper .cardd img {
+    width: 100%;
+    height: 100%;
   }
-  .pakets .container .content .cards__wrapper .card .info {
+  .pakets .container .content .cards__wrapper .cardd .info {
     padding: 10px;
   }
-  .pakets .container .content .cards__wrapper .card .info .title {
+  .pakets .container .content .cards__wrapper .cardd .info .title {
     all: unset;
     font-size: 18px;
     text-align: left;
@@ -1292,25 +1396,25 @@ hr {
     margin-bottom: 6px;
     color: #000;
   }
-  .pakets .container .content .cards__wrapper .card .info p {
+  .pakets .container .content .cards__wrapper .cardd .info p {
     font-size: 13px;
     text-align: left;
     padding-right: 5px;
     color: #161515;
   }
-  .pakets .container .content .cards__wrapper .card .apply__btn {
-    width: 40px;
+  .pakets .container .content .cards__wrapper .cardd .apply__btn {
+    width: 70px;
     height: 100%;
     background-color: #9BBAD3;
     border: none;
     cursor: pointer;
     border-radius: 0 10px 10px 0;
   }
-  .pakets .container .content .cards__wrapper .card .apply__btn img {
+  .pakets .container .content .cards__wrapper .cardd .apply__btn img {
     width: 30px;
     height: 30px;
   }
-  .pakets .container .content .cards__wrapper .card:hover {
+  .pakets .container .content .cards__wrapper .cardd:hover {
     -webkit-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.31);
     box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.31);
     border-bottom: 3px solid #fff;
@@ -1382,6 +1486,63 @@ hr {
   -webkit-box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
           box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+.turinfo .container .leftcontent .details .more__info .star__panel {
+  width: 100%;
+}
+.turinfo .container .leftcontent .details .more__info .star__panel button {
+  all: unset;
+}
+.turinfo .container .leftcontent .details .more__info .star__panel form {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.turinfo .container .leftcontent .details .more__info .star__panel form .rate {
+  width: auto;
+  height: 46px;
+  padding: 0 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.turinfo .container .leftcontent .details .more__info .star__panel form .rate:not(:checked) > input {
+  position: absolute;
+  top: -9999px;
+}
+.turinfo .container .leftcontent .details .more__info .star__panel form .rate:not(:checked) > label {
+  float: right;
+  width: 1em;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 30px;
+  color: #ccc;
+}
+.turinfo .container .leftcontent .details .more__info .star__panel form .rate:not(:checked) > label:before {
+  font-size: 20px;
+  content: "★ ";
+}
+.turinfo .container .leftcontent .details .more__info .star__panel form .rate > input:checked ~ label {
+  color: #ffc700;
+}
+.turinfo .container .leftcontent .details .more__info .star__panel form .rate:not(:checked) > label:hover,
+.turinfo .container .leftcontent .details .more__info .star__panel form .rate:not(:checked) > label:hover ~ label {
+  color: #deb217;
+}
+.turinfo .container .leftcontent .details .more__info .star__panel form .rate > input:checked + label:hover,
+.turinfo .container .leftcontent .details .more__info .star__panel form .rate > input:checked + label:hover ~ label,
+.turinfo .container .leftcontent .details .more__info .star__panel form .rate > input:checked ~ label:hover,
+.turinfo .container .leftcontent .details .more__info .star__panel form .rate > input:checked ~ label:hover ~ label,
+.turinfo .container .leftcontent .details .more__info .star__panel form .rate > label:hover ~ input:checked ~ label {
+  color: #c59b08;
+}
 .turinfo .container .leftcontent .details .shopbtn {
   all: unset;
   background-color: #D1E9F6;
@@ -1449,7 +1610,11 @@ hr {
 .turinfo .container .containerform ul li .comment__text__wrapper {
   margin-bottom: 10px;
 }
-.turinfo .container .containerform ul li .comment__text__wrapper .comment__buble {
+.turinfo .container .containerform ul li .comment__text__wrapper .allcomment__wrapper {
+  width: auto;
+  height: auto;
+}
+.turinfo .container .containerform ul li .comment__text__wrapper .allcomment__wrapper .comment__buble {
   --r: 1em;
   /* the radius */
   --t: 1.5em;
@@ -1465,68 +1630,35 @@ hr {
           mask: radial-gradient(100% 100% at var(--_p) 0, rgba(0, 0, 0, 0) 99%, #000 102%) var(--_p) 100%/var(--t) var(--t) no-repeat, linear-gradient(#000 0 0) padding-box;
   background: #9bbad3;
   color: #fff;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
-.turinfo .container .containerform ul li .comment__text__wrapper .comment__buble .comment__text {
+.turinfo .container .containerform ul li .comment__text__wrapper .allcomment__wrapper .comment__buble .comment__text {
   overflow: hidden;
 }
-.turinfo .container .containerform ul li .comment__text__wrapper .left {
+.turinfo .container .containerform ul li .comment__text__wrapper .allcomment__wrapper .comment__buble .replybtn {
+  all: unset;
+  width: auto;
+  height: auto;
+  background-color: transparent;
+  cursor: pointer;
+}
+.turinfo .container .containerform ul li .comment__text__wrapper .allcomment__wrapper .color {
+  background-color: gray;
+}
+.turinfo .container .containerform ul li .comment__text__wrapper .allcomment__wrapper .color p {
+  color: rgb(217, 209, 209);
+}
+.turinfo .container .containerform ul li .comment__text__wrapper .allcomment__wrapper .left {
   --_p: 0;
   border-bottom-left-radius: 0 0;
   place-self: start;
 }
-.turinfo .container .containerform ul li .comment__text__wrapper .right {
+.turinfo .container .containerform ul li .comment__text__wrapper .allcomment__wrapper .right {
   --_p: 100%;
   border-bottom-right-radius: 0 0;
   place-self: end;
   margin-bottom: 10px;
-}
-.turinfo .container .containerform ul li .comment__text__wrapper .quoteWrapper {
-  position: relative;
-  width: auto;
-  margin: auto;
-  padding: 10px;
-  background-color: transparent;
-  background-image: linear-gradient(-45deg, transparent, transparent 2%, white 2%, white 85%, transparent, 85%, transparent), linear-gradient(to bottom right, #2ad, #2ad 90%, transparent 90%);
-  background-position: top left, 0.2em 0.2em;
-  background-repeat: no-repeat;
-  -webkit-filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.3333333333));
-          filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.3333333333));
-}
-.turinfo .container .containerform ul li .comment__text__wrapper .quoteWrapper::before,
-.turinfo .container .containerform ul li .comment__text__wrapper .quoteWrapper::after {
-  position: absolute;
-  z-index: -1;
-  display: block;
-  width: 30px;
-  height: 20px;
-  content: "";
-  z-index: 0;
-  font-size: 50px;
-  font-family: Georgia, Times, Garamond, serif;
-}
-.turinfo .container .containerform ul li .comment__text__wrapper .quoteWrapper::before {
-  top: 10px;
-  left: 10px;
-  content: open-quote;
-}
-.turinfo .container .containerform ul li .comment__text__wrapper .quoteWrapper::after {
-  bottom: -1px;
-  right: -5px;
-  content: close-quote;
-}
-.turinfo .container .containerform ul li .comment__text__wrapper .quoteWrapper::before,
-.turinfo .container .containerform ul li .comment__text__wrapper .quoteWrapper::after,
-.turinfo .container .containerform ul li .comment__text__wrapper .quoteWrapper h2 {
-  text-shadow: -2px 2px #fff, -1.5px 1.5px #fff, -1px 1px #fff, -0.5px 0.5px #fff;
-}
-.turinfo .container .containerform ul li .comment__text__wrapper .quoteWrapper h2 {
-  -webkit-margin-after: 1rem;
-          margin-block-end: 1rem;
-}
-.turinfo .container .containerform ul li .comment__text__wrapper .quoteWrapper p {
-  -webkit-margin-before: 1rem;
-          margin-block-start: 1rem;
-  text-indent: 2ch;
 }
 .turinfo .container .containerform ul .bright {
   width: auto;
@@ -1589,41 +1721,6 @@ hr {
 .turinfo .container .containerform .comment-wrapper form button .btnimg {
   width: 50px;
   height: 30px;
-}
-.turinfo .container .rate {
-  float: left;
-  height: 46px;
-  padding: 0 10px;
-}
-.turinfo .container .rate:not(:checked) > input {
-  position: absolute;
-  top: -9999px;
-}
-.turinfo .container .rate:not(:checked) > label {
-  float: right;
-  width: 1em;
-  overflow: hidden;
-  white-space: nowrap;
-  cursor: pointer;
-  font-size: 30px;
-  color: #ccc;
-}
-.turinfo .container .rate:not(:checked) > label:before {
-  content: "★ ";
-}
-.turinfo .container .rate > input:checked ~ label {
-  color: #ffc700;
-}
-.turinfo .container .rate:not(:checked) > label:hover,
-.turinfo .container .rate:not(:checked) > label:hover ~ label {
-  color: #deb217;
-}
-.turinfo .container .rate > input:checked + label:hover,
-.turinfo .container .rate > input:checked + label:hover ~ label,
-.turinfo .container .rate > input:checked ~ label:hover,
-.turinfo .container .rate > input:checked ~ label:hover ~ label,
-.turinfo .container .rate > label:hover ~ input:checked ~ label {
-  color: #c59b08;
 }
 
 @media only screen and (min-width: 768px) {
@@ -1693,6 +1790,63 @@ hr {
   .turinfo .container .leftcontent .details .more__info:hover {
     -webkit-box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
             box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+  .turinfo .container .leftcontent .details .more__info .star__panel {
+    width: 100%;
+  }
+  .turinfo .container .leftcontent .details .more__info .star__panel button {
+    all: unset;
+  }
+  .turinfo .container .leftcontent .details .more__info .star__panel form {
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+  }
+  .turinfo .container .leftcontent .details .more__info .star__panel form .rate {
+    width: auto;
+    height: 46px;
+    padding: 0 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+  }
+  .turinfo .container .leftcontent .details .more__info .star__panel form .rate:not(:checked) > input {
+    position: absolute;
+    top: -9999px;
+  }
+  .turinfo .container .leftcontent .details .more__info .star__panel form .rate:not(:checked) > label {
+    float: right;
+    width: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 30px;
+    color: #ccc;
+  }
+  .turinfo .container .leftcontent .details .more__info .star__panel form .rate:not(:checked) > label:before {
+    font-size: 25px;
+    content: "★ ";
+  }
+  .turinfo .container .leftcontent .details .more__info .star__panel form .rate > input:checked ~ label {
+    color: #ffc700;
+  }
+  .turinfo .container .leftcontent .details .more__info .star__panel form .rate:not(:checked) > label:hover,
+  .turinfo .container .leftcontent .details .more__info .star__panel form .rate:not(:checked) > label:hover ~ label {
+    color: #deb217;
+  }
+  .turinfo .container .leftcontent .details .more__info .star__panel form .rate > input:checked + label:hover,
+  .turinfo .container .leftcontent .details .more__info .star__panel form .rate > input:checked + label:hover ~ label,
+  .turinfo .container .leftcontent .details .more__info .star__panel form .rate > input:checked ~ label:hover,
+  .turinfo .container .leftcontent .details .more__info .star__panel form .rate > input:checked ~ label:hover ~ label,
+  .turinfo .container .leftcontent .details .more__info .star__panel form .rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
   }
   .turinfo .container .leftcontent .details .shopbtn {
     all: unset;
