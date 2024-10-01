@@ -139,7 +139,7 @@
                     <form method="POST">
                         {% csrf_token %}
                         <textarea id="txtarea" name="comment" rows="4" cols="50"
-                            placeholder="Sharhingizni kiriting..."></textarea><br>
+                            placeholder="Sharhingizni kiriting..." required></textarea><br>
                         <input type="hidden" name="parent_id" id="parent_id" value="">
                         <button type="submit"><img class="btnimg" src="{% static 'img/turinfo/send.png' %}" alt="">
                             </button>
