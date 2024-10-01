@@ -209,18 +209,6 @@ a {
 :root {
   --m: 4rem;
 }
-
-button {
-  background-color: #000;
-  font-size: calc(0.4 * var(--m));
-  border: none;
-  color: #e5e5e5;
-  font-family: "IBM Plex Sans";
-  font-weight: 400;
-  padding: calc(0.35 * var(--m)) calc(0.8 * var(--m));
-  border-radius: calc(0.3 * var(--m));
-}
-
 footer {
   z-index: 500;
   width: 100%;
