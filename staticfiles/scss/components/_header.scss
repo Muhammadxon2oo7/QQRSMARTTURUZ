@@ -7,7 +7,8 @@ header{
     z-index: 100;
     transition: background-color 0.3s ease;
     background-color: transparent;
-    position: absolute;
+
+    position: absolute; /* Boshlang‘ich holatda header birinchi bo‘lim bilan birga skroll bo‘ladi */
     top: 0;
     width: 100%;
     transition: all 0.3s ease;
@@ -26,53 +27,13 @@ header{
                 width: 100%;   
                 height: 100%;
                 filter: drop-shadow( rgba(0, 0, 0, 0.24) 0px 3px 8px);
+
+                
             }
+            
         }
-        .navlang{
-          width: auto;
-          display: flex;
-          gap: 10px;
-          .nav__Wrapper{
+        .nav__Wrapper{
             display: none;
-        }
-        .lang{
-                  
-          width: auto;
-          height: auto;
-          margin-right: 15px;
-          // overflow: hidden;
-          position: relative;
-          margin: 0 auto;
-          right: 0;
-          .lang-open{
-            width: auto;
-            position: absolute;
-            left: 0;
-            top: 25px;
-            transform: translateX(-50%);
-            padding: 20px;
-            background-color: #fff;
-            // transition: .5s;
-            visibility: hidden  ;
-            button{
-              all: unset;
-              width: 60px;
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              cursor: pointer;
-              &:not(:last-child){
-                margin-bottom: 5px;
-              }
-              &:hover{
-                background-color: #6a708e;
-                width: 100%;
-              }
-            }
-          }
-          .active-lang-open{
-            visibility: visible;
-          }
         }
         .display{
             display: flex;
@@ -149,44 +110,7 @@ header{
                   .dropdown:hover .dropdown-content {
                     display: block;
                   }
-                  .admin__tools {
-                    width: auto;
-                    cursor: pointer;
-                    position: relative;
-                }
-            
-                .admin__opntool {
-                    position: absolute;
-                    left: 50%;
-                    top: 30px;
-                    background-color: rgb(84, 73, 135);
-                    transform: translateX(-50%);
-                    padding: 5px;
-                    background-color: #11111120;
-                    backdrop-filter: blur(10px);
-                    box-shadow: 0 0 8px #ffffff25;
-                    display: none;
-                }
-            
-                .regoption {
-                    display: block;
-                }
-            
-                .admin__opntool button {
-                    all: unset;
-                    width: 100%;
-                    height: auto;
-                    background-color: red;
-                }
-            
-                .username {
-                    width: 100%;
-                    color: white;
-                    /* box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset; */
-                }
-                
             }
-        }
         }
     }
 }
@@ -199,7 +123,15 @@ header{
                 height: 100px;
                 padding: 0;
                 margin: 0;
- 
+                // background-image: url('../../img/bg_logo.png');
+                // background-repeat: no-repeat;
+                // position: relative;
+                // background-size: cover;
+                // background-position: center;
+                // display: flex;
+                // justify-content: center;
+                // align-items: center;
+                // z-index: 100;
                 padding: 0;
                 img{
                   padding: 0;
@@ -208,10 +140,7 @@ header{
                   height: 90px;
                 }
             }
-            .navlang{
-              display: flex;
-              width: auto;
-              .nav__Wrapper{
+            .nav__Wrapper{
                 display: block;
                 ul{
                     // width: 100%;
@@ -235,7 +164,43 @@ header{
                         }
                         
                     }
+                    .lang{
+                      width: auto;
+                      height: auto;
+                      margin-right: 15px;
                     
+                      // overflow: hidden;
+                      position: relative;
+                      .lang-open{
+                        width: auto;
+                        position: absolute;
+                        left: 0;
+                        top: 25px;
+                        transform: translateX(-50%);
+                        padding: 20px;
+                        background-color: #fff;
+                        // transition: .5s;
+                        visibility: hidden  ;
+                        button{
+                          all: unset;
+                          width: 60px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: space-between;
+                          cursor: pointer;
+                          &:not(:last-child){
+                            margin-bottom: 5px;
+                          }
+                          &:hover{
+                            background-color: #6a708e;
+                            width: 100%;
+                          }
+                        }
+                      }
+                      .active-lang-open{
+                        visibility: visible;
+                      }
+                    }
                     .li{
                       &:hover {
                         
@@ -312,48 +277,9 @@ header{
                       }
                 }
             }
-            .lang{
-              width: auto;
-              height: auto;
-              margin-right: 15px;
-            
-              // overflow: hidden;
-              position: relative;
-              .lang-open{
-                width: auto;
-                position: absolute;
-                left: 0;
-                top: 25px;
-                transform: translateX(-50%);
-                padding: 20px;
-                background-color: #fff;
-                // transition: .5s;
-                visibility: hidden  ;
-                button{
-                  all: unset;
-                  width: 60px;
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-                  cursor: pointer;
-                  &:not(:last-child){
-                    margin-bottom: 5px;
-                  }
-                  &:hover{
-                    background-color: #6a708e;
-                    width: 100%;
-                  }
-                }
-              }
-              .active-lang-open{
-                visibility: visible;
-              }
-            }
             .ham__Wrapper{
-              display: none;
+                display: none;
             }
-            }
-            
         }
     }
 }

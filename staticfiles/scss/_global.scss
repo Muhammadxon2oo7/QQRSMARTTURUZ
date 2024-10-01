@@ -175,8 +175,7 @@ a{
 
 :root {
     --m: 4rem;
-  }
-  
+  }  
   footer {
 
     z-index: 500;
@@ -192,45 +191,6 @@ a{
     color: #fff;
   }
   
-//   footer::before {
-//     content: "";
-//     position: absolute;
-//     inset: 0;
-//     background: linear-gradient(
-//       rgba(0, 0, 0, 0) 5%,
-//       rgba(0, 0, 0, 0.3) 20%,
-//       rgba(0, 0, 0, 0.6) 30%,
-//       rgba(0, 0, 0, 0.8) 40%,
-//       rgba(0, 0, 0, 1) 50%,
-//       rgb(0, 0, 0)
-//     );
-//     z-index: -7;
-//   }
-  
-//   .backdrop {
-//     z-index: -5;
-//     position: absolute;
-//     inset: 0;
-  
-//     backdrop-filter: blur(40px);
-//     -webkit-backdrop-filter: blur(40px);
-  
-//     mask-image: linear-gradient(
-//       rgba(0, 0, 0, 0),
-//       rgba(0, 0, 0, 0.5) 10%,
-//       rgba(0, 0, 0, 0.8) 20%,
-//       rgba(0, 0, 0, 1) 30%,
-//       rgb(0, 0, 0)
-//     );
-  
-//     -webkit-mask-image: linear-gradient(
-//       rgba(0, 0, 0, 0),
-//       rgba(0, 0, 0, 0.5) 10%,
-//       rgba(0, 0, 0, 0.8) 20%,
-//       rgba(0, 0, 0, 1) 30%,
-//       rgb(0, 0, 0)
-//     );
-//   }
   
   .col {
     flex-direction: column;
@@ -262,12 +222,13 @@ a{
     text-decoration: none;
     color: inherit;
   }
-
+  
   .link {
     width: calc(0.8 * var(--m));
     height: calc(0.8 * var(--m));
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: calc(0.1 * var(--m));
+  
     display: flex;
     justify-content: center;
     align-items: center;

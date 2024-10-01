@@ -62,56 +62,6 @@
                         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
                     }
-                    .star__panel{
-                        width: 100%;
-                        button{
-                            all: unset;
-                        }
-                        form{
-                            width: 100%;
-                            display: flex;
-                            justify-content: center;
-                            
-                            .rate {
-                               width: auto;
-                                height: 46px;
-                                padding: 0 10px;
-                                display: flex;
-                                justify-content: center;
-                            }
-                            .rate:not(:checked) > input {
-                                position:absolute;
-                                top:-9999px;
-                            }
-                            .rate:not(:checked) > label {
-                                float:right;
-                                width:1em;
-                                overflow:hidden;
-                                white-space:nowrap;
-                                cursor:pointer;
-                                font-size:30px;
-                                color:#ccc;
-                            }
-                            .rate:not(:checked) > label:before {
-                                font-size: 20px;
-                                content: '★ ';
-                            }
-                            .rate > input:checked ~ label {
-                                color: #ffc700;    
-                            }
-                            .rate:not(:checked) > label:hover,
-                            .rate:not(:checked) > label:hover ~ label {
-                                color: #deb217;  
-                            }
-                            .rate > input:checked + label:hover,
-                            .rate > input:checked + label:hover ~ label,
-                            .rate > input:checked ~ label:hover,
-                            .rate > input:checked ~ label:hover ~ label,
-                            .rate > label:hover ~ input:checked ~ label {
-                                color: #c59b08;
-                            }
-                        }
-                    }
                 }
 
                 .shopbtn {
@@ -177,61 +127,103 @@
 
                         // border-radius: 7px;
                         // background-color: green;
-                        .allcomment__wrapper{
+                        .comment__buble {
+                            --r: 1em;
+                            /* the radius */
+                            --t: 1.5em;
+                            /* the size of the tail */
+                            max-width: 300px;
+                            //    max-width: 80%;
+                            //     min-width:90px;
+                            //     min-height: 40px;
+                            //     max-height: fit-content;
+                            padding: 1em;
+                            padding-right: 5px;
+                            border-inline: var(--t) solid #0000;
+                            border-radius: calc(var(--r) + var(--t))/var(--r);
+                            mask:
+                                radial-gradient(100% 100% at var(--_p) 0, #0000 99%, #000 102%) var(--_p) 100%/var(--t) var(--t) no-repeat,
+                                linear-gradient(#000 0 0) padding-box;
+                            background: #9bbad3;
+                            color: #fff;
+
+                            .comment__text {
+                                overflow: hidden;
+                            }
+                        }
+
+                        .left {
+                            --_p: 0;
+                            border-bottom-left-radius: 0 0;
+                            place-self: start;
+                        }
+
+                        .right {
+                            --_p: 100%;
+                            border-bottom-right-radius: 0 0;
+                            place-self: end;
+                            margin-bottom: 10px;
+                        }
+
+                        .quoteWrapper {
+                            position: relative;
                             width: auto;
-                            height: auto;
-                            .comment__buble {
-                                --r: 1em;
-                                /* the radius */
-                                --t: 1.5em;
-                                /* the size of the tail */
-                                max-width: 300px;
-                                //    max-width: 80%;
-                                //     min-width:90px;
-                                //     min-height: 40px;
-                                //     max-height: fit-content;
-                                padding: 1em;
-                                padding-right: 5px;
-                                border-inline: var(--t) solid #0000;
-                                border-radius: calc(var(--r) + var(--t))/var(--r);
-                                mask:
-                                    radial-gradient(100% 100% at var(--_p) 0, #0000 99%, #000 102%) var(--_p) 100%/var(--t) var(--t) no-repeat,
-                                    linear-gradient(#000 0 0) padding-box;
-                                background: #9bbad3;
-                                color: #fff;
-                                margin-bottom: 10px;
-                                margin-top: 10px;
-                                .comment__text {
-                                    overflow: hidden;
-                                }
-                                .replybtn{
-                                    all: unset;
-                                    width: auto;
-                                    height: auto;
-                                    background-color: transparent;
-                                    cursor: pointer;
-                                    // border-bottom: 2px double  black;
-                                }
-                            }
-                            .color{
-                                background-color: gray;
-                                p{
-                                    color: rgb(217, 209, 209);
-                                }
-                            }
-    
-                            .left {
-                                --_p: 0;
-                                border-bottom-left-radius: 0 0;
-                                place-self: start;
-                            }
-    
-                            .right {
-                                --_p: 100%;
-                                border-bottom-right-radius: 0 0;
-                                place-self: end;
-                                margin-bottom: 10px;
-                            }
+                            margin: auto;
+                            padding: 10px;
+                            background-color: transparent;
+                            background-image: linear-gradient(-45deg,
+                                    transparent,
+                                    transparent 2%,
+                                    white 2%,
+                                    white 85%,
+                                    transparent,
+                                    85%,
+                                    transparent),
+                                linear-gradient(to bottom right, #2ad, #2ad 90%, transparent 90%);
+                            background-position: top left, 0.2em 0.2em;
+                            background-repeat: no-repeat;
+                            filter: drop-shadow(0 0 15px #0005);
+                        }
+
+                        .quoteWrapper::before,
+                        .quoteWrapper::after {
+                            position: absolute;
+                            
+                            z-index: -1;
+                            display: block;
+                            width: 30px;
+                            height: 20px;
+                            content: "";
+                            z-index: 0;
+                            font-size: 50px;
+                            font-family: Georgia, Times, Garamond, serif;
+                        }
+
+                        .quoteWrapper::before {
+                            top:10px;
+                            left: 10px;
+                            content: open-quote;
+                        }
+
+                        .quoteWrapper::after {
+                            bottom: -1px;
+                            right: -5px;
+                            content: close-quote;
+                        }
+
+                        .quoteWrapper::before,
+                        .quoteWrapper::after,
+                        .quoteWrapper h2 {
+                            text-shadow: -2px 2px #fff, -1.5px 1.5px #fff, -1px 1px #fff, -0.5px 0.5px #fff;
+                        }
+
+                        .quoteWrapper h2 {
+                            margin-block-end: 1rem;
+                        }
+
+                        .quoteWrapper p {
+                            margin-block-start: 1rem;
+                            text-indent: 2ch;
                         }
 
                     }
@@ -290,7 +282,41 @@
             }
             
         }
-
+        .rate {
+            float: left;
+            height: 46px;
+            padding: 0 10px;
+        }
+        .rate:not(:checked) > input {
+            position:absolute;
+            top:-9999px;
+        }
+        .rate:not(:checked) > label {
+            float:right;
+            width:1em;
+            overflow:hidden;
+            white-space:nowrap;
+            cursor:pointer;
+            font-size:30px;
+            color:#ccc;
+        }
+        .rate:not(:checked) > label:before {
+            content: '★ ';
+        }
+        .rate > input:checked ~ label {
+            color: #ffc700;    
+        }
+        .rate:not(:checked) > label:hover,
+        .rate:not(:checked) > label:hover ~ label {
+            color: #deb217;  
+        }
+        .rate > input:checked + label:hover,
+        .rate > input:checked + label:hover ~ label,
+        .rate > input:checked ~ label:hover,
+        .rate > input:checked ~ label:hover ~ label,
+        .rate > label:hover ~ input:checked ~ label {
+            color: #c59b08;
+        }
         
     }
 }
@@ -364,55 +390,6 @@
                         &:hover {
                             box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
-                        }
-                        .star__panel{
-                            width: 100%;
-                            button{
-                                all: unset;
-                            }
-                            form{
-                                width: 100%;
-                                display: flex;
-                                justify-content: flex-start;
-                                .rate {
-                                   width: auto;
-                                    height: 46px;
-                                    padding: 0 10px;
-                                    display: flex;
-                                    justify-content: flex-start;
-                                }
-                                .rate:not(:checked) > input {
-                                    position:absolute;
-                                    top:-9999px;
-                                }
-                                .rate:not(:checked) > label {
-                                    float:right;
-                                    width:1em;
-                                    overflow:hidden;
-                                    white-space:nowrap;
-                                    cursor:pointer;
-                                    font-size:30px;
-                                    color:#ccc;
-                                }
-                                .rate:not(:checked) > label:before {
-                                    font-size: 25px;
-                                    content: '★ ';
-                                }
-                                .rate > input:checked ~ label {
-                                    color: #ffc700;    
-                                }
-                                .rate:not(:checked) > label:hover,
-                                .rate:not(:checked) > label:hover ~ label {
-                                    color: #deb217;  
-                                }
-                                .rate > input:checked + label:hover,
-                                .rate > input:checked + label:hover ~ label,
-                                .rate > input:checked ~ label:hover,
-                                .rate > input:checked ~ label:hover ~ label,
-                                .rate > label:hover ~ input:checked ~ label {
-                                    color: #c59b08;
-                                }
-                            }
                         }
                     }
 
