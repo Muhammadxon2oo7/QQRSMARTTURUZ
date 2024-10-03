@@ -27,13 +27,20 @@
             <hr>
           </div>
           <p class="description">{{ article.text }}</p>
+          <div class="additional__info">    
+            <button><img src="{%  static  'img/turinfo/heart.png' %}" alt=""></button>
+            <button><img src="{%  static  'img/turinfo/add.png' %}" alt=""></button>
+            <button><img src="{%  static  'img/turinfo/info.png' %}" alt=""></button>
+          </div>
         </div>
 
         {% if article.img %}
         <div id="image-first" class="pannelitem" style="background-image: url('{{ article.img.url }}');">
           <div class="triangle-right"></div>
         </div>
+        
         {% endif %}
+        
       </div>
       {% endfor %}
       {% else %}
