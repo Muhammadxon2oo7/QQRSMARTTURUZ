@@ -1664,7 +1664,11 @@ hr {
   height: auto;
   background-color: transparent;
   cursor: pointer;
+  text-decoration: underline;
 }
+/* .replybtn a{
+  text-decoration: underline;
+} */
 .turinfo .container .containerform ul li .comment__text__wrapper .allcomment__wrapper .color {
   background-color: gray;
 }
