@@ -209,7 +209,7 @@ const translations = {
     "replyc":"Javob berish",
   },
   "en": {
-    "greeting": "Welcome to Qarakalpakstan",
+    "greeting": "Welcome to Karakalpakstan",
     "welcome": "Discover a new culture for yourself.",
     "mainPage": "Home",
     "contact": "About us",
