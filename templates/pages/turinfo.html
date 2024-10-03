@@ -59,11 +59,11 @@
                     <div class="more__info">
                         <div class="time">
                             <img src="{% static 'img/turinfo/time.png' %}" alt="">
-                            <p>{{places.duration}} kun</p>
+                            <p >{{places.duration}} <span id="day">kun</span></p>
                         </div>
                         <div class="time">
                             <img src="{% static 'img/turinfo/member.png' %}" alt="">
-                            <p>{{places.places_count}} ta </p>
+                            <p>{{places.places_count}} <span id="places">ta</span> </p>
                         </div>
                         <div class="time">
                             <img src="{% static 'img/turinfo/money.png' %}" alt="">
@@ -89,16 +89,14 @@
                     </div>
                     <button class="shopbtn"><a style="width: 100%;
                     height: 100%; display: flex;
-                    justify-content: center; align-items: center;" href="tel:+{{places.phone_number}}">Bog'lanish</a></button>
+                    justify-content: center; align-items: center;" href="tel:+{{places.phone_number}}" id="contactpl">Bog'lanish</a></button>
                 </div>
 
             </div>
-            
-            <p>O'rtacha yulduzlar: {{ places.average_rating }}</p>
             <div class="containerform">
 
 
-                <h3 class="h3chat">Savol va takliflar</h3>
+                <h3 class="h3chat" id="requests">Savol va takliflar</h3>
                 <ul class="scrollul">
                     {% for comment in comments %}
                     <li class="{% if comment.user == request.user %}bright{% else %}bleft{% endif %}">
@@ -110,7 +108,7 @@
                                 {% endfor %}
                                 <h3 class="comment__users__name">{{ comment.user.first_name }}</h3>
                                 <p class="comment__text">{{ comment.text }}</p>
-                                <button class="replybtn" onclick="setParentId('{{ comment.id }}');"><a href="#txtarea">Javob berish</a></button>
+                                <button class="replybtn" onclick="setParentId('{{ comment.id }}');"><a href="#txtarea" id="replyc">Javob berish</a></button>
                             </div>
                             <p class="comment__time">{{ comment.created_at }}</p>
                             {% for reply in comment.replies.all %}

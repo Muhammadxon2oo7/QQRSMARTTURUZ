@@ -201,7 +201,12 @@ const translations = {
     "dMaslahatlar": "Maslahatlar",
     "dKitob": "Kitob va Jurnallar",
     "dstatistika": "Statistika",
-    "secure": "2024 © Barcha huquqlar himoyalangan"
+    "secure": "2024 © Barcha huquqlar himoyalangan",
+    "requests":"Savol va Takliflar",
+    "day":"Kun",
+    "places":"ta bo'sh joy",
+    "contactpl":"Bog'lanish",
+    "replyc":"Javob berish",
   },
   "en": {
     "greeting": "Welcome to Qarakalpakstan",
@@ -225,8 +230,12 @@ const translations = {
     "dMaslahatlar": "Tips",
     "dKitob": "Books and Magazines",
     "dstatistika": "Statistics",
-    "secure": "2024 © All Rights Reserved"
-
+    "secure": "2024 © All Rights Reserved",
+    "requests":"Questions and Suggestions",
+    "day":"Day",
+    "places":"spaces",
+    "contactpl":"Contact",
+    "replyc":"Reply",
   },
   "ru": {
     "greeting": "Добро пожаловать в Каракалпакстан.",
@@ -250,8 +259,12 @@ const translations = {
     "dMaslahatlar": "Советы",
     "dKitob": "Книги и журналы",
     "dstatistika": "Статистика",
-    "secure": "2024 © Все права защищены"
-
+    "secure": "2024 © Все права защищены",
+    "requests":"Вопросы и предложения",
+    "day":"День",
+    "places":"Mест",
+    "contactpl":"Cвязаться",
+    "replyc":"Oтветить",
   }
 };
 
@@ -411,7 +424,27 @@ function changeLanguage(lang) {
     if (secure) {
       secure.textContent = translations[lang].secure;
     }
-
+    let requests=document.getElementById("requests")
+    if(requests){
+      requests.textContent=translations[lang].requests;
+    }
+    let day=document.getElementById("day")
+    if(day){
+      day.textContent=translations[lang].day;
+    }
+    let places=document.getElementById("places")
+    if(places){
+      places.textContent=translations[lang].places;
+    }
+    let contactpl=document.getElementById("contactpl")
+    if(contactpl){
+      contactpl.textContent=translations[lang].contactpl;
+    }
+    let replyc=document.getElementById("replyc")
+    if(replyc){
+      replyc.textContent=translations[lang].replyc;
+    }
+    
   } else {
     console.error("Til mavjud emas: " + lang);
   }
