@@ -440,11 +440,13 @@ function changeLanguage(lang) {
     if(contactpl){
       contactpl.textContent=translations[lang].contactpl;
     }
-    let replyc=document.getElementById("replyc")
-    if(replyc){
-      replyc.textContent=translations[lang].replyc;
+    let replycElements = document.querySelectorAll("#replyc");
+
+    if (replycElements.length > 0) {
+        replycElements.forEach(element => {
+            element.textContent = translations[lang].replyc;
+        });
     }
-    
   } else {
     console.error("Til mavjud emas: " + lang);
   }
