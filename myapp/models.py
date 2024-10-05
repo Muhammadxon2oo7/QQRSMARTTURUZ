@@ -10,6 +10,7 @@ from django.conf import settings
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    add_to_cart_limit = models.PositiveIntegerField(default=5)
 
     def __str__(self):
         return self.name
