@@ -28,13 +28,13 @@
         width: 100%;
         height: 400px;
     }
+
 </style>
 
 <body>
-    {% include 'header.html' %}
-
-
+    {% include 'header.html' %}    
     <section class="turinfo">
+
         <div class="container">
             <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" space-between="30"
                 effect="fade" loop="true" autoplay-delay="2500" autoplay-disable-on-interaction="false"
@@ -105,15 +105,10 @@
                                 <h3 class="comment__users__name">{{ comment.user.first_name }}</h3>
                                 <p class="comment__text">{{ comment.text }}</p>
                                 <button class="replybtn" onclick="setParentId('{{ comment.id }}');"><a href="#txtarea" id="replyc">Javob berish</a></button>
-                            </div>
-                            <p class="comment__time">{{ comment.created_at }}</p>
-                            {% for reply in comment.replies.all %}
-                            <!-- <div class="allcomment__wrapper">
-                                <div class="comment__buble">
-                                   
-                                    
                                 </div>
-                            </div> -->
+                                <p class="comment__time">{{ comment.created_at }}</p>
+                                {% for reply in comment.replies.all %}
+                            </div>
                             <div class="allcomment__wrapper ">
                                 <div class="comment__buble color {% if comment.user == request.user %}right{% else %}left{% endif %}">
                                 <h2 class="comment__users__name">{{ reply.user.first_name }}</h2>

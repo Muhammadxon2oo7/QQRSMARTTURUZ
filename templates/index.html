@@ -28,6 +28,7 @@
         box-sizing: border-box;
     }
 
+<<<<<<< HEAD
     .carousel-image {
         max-width: 100%;
         /* Rasm kengligi konteynerni to'liq qoplaydi */
@@ -36,9 +37,49 @@
         object-fit: fill;
         display: block;
     }
+=======
+.carousel-image {
+    max-width: 100%; /* Rasm kengligi konteynerni to'liq qoplaydi */
+    max-height: 100%; /* Rasm balandligi konteyner balandligiga sig'adi */
+    object-fit: fill;
+    display: block;
+}
+.test-mode-banner {
+    background-color: #ffcc00;
+    color: red;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.test-mode-banner p {
+    display:flex;
+    /* padding-left: 100%; Matnning boshlang'ich joyi */
+    animation: scrollText 15s linear infinite; /* Animatsiya */
+}
+
+@keyframes scrollText {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+>>>>>>> dda3476624443062c986c8188dae4c01a69c3468
 </style>
 <main>
     <section class="banner" id="first-section">
+        <div class="test-mode-banner">
+            <p id="demosite">Ushbu sayt test rejimida ishlamoqda</p>
+        </div>
         <div class="container">
             <div>
                 <p class="bannertxt" id="bannertxt">
@@ -55,7 +96,8 @@
             <div class="carousel-content">
                 {% for new in news %}
                 <div class="carousel-item">
-                    <img src="{{ new.img.url }}" alt="{{ new.title }}">
+                    <img style="width: 100%;
+                    height: 100%;" src="{{ new.img.url }}" alt="{{ new.title }}">
                 </div>
                 {% endfor %}
             </div>
