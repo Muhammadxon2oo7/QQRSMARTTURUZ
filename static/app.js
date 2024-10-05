@@ -207,6 +207,8 @@ const translations = {
     "places":"ta bo'sh joy",
     "contactpl":"Bog'lanish",
     "replyc":"Javob berish",
+    "demosite":"Ushbu sayt test rejimida ishlamoqda va shu saytdagi barcha contentlar to'liq tasdiqlanmagan",
+    "txtarea":"Sharhingizni kiriting..."
   },
   "en": {
     "greeting": "Welcome to Karakalpakstan",
@@ -236,6 +238,8 @@ const translations = {
     "places":"spaces",
     "contactpl":"Contact",
     "replyc":"Reply",
+    "demosite":"This site is in beta mode and all content has not been fully verified.",
+    "txtarea":"Enter your comment..."
   },
   "ru": {
     "greeting": "Добро пожаловать в Каракалпакстан.",
@@ -265,6 +269,8 @@ const translations = {
     "places":"Mест",
     "contactpl":"Cвязаться",
     "replyc":"Oтветить",
+    "demosite":"Этот сайт находится в тестовом режиме, и все его содержимое не полностью проверено.",
+    "txtarea":"Введите свой комментарий...",
   }
 };
 
@@ -440,21 +446,25 @@ function changeLanguage(lang) {
     if(contactpl){
       contactpl.textContent=translations[lang].contactpl;
     }
+    let demosite=document.getElementById("demosite")
+    if(demosite){
+      demosite.textContent=translations[lang].demosite;
+    }
     let replycElements = document.querySelectorAll("#replyc");
-
+    
     if (replycElements.length > 0) {
         replycElements.forEach(element => {
             element.textContent = translations[lang].replyc;
         });
     }
+    let txtarea = document.getElementById("txtarea");
+    if (txtarea) {
+      txtarea.placeholder = `${translations[lang].txtarea}`; 
+    }
+
   } else {
     console.error("Til mavjud emas: " + lang);
   }
-
-  // // Sahifada matnlarni o'zgartirish
-  // document.getElementById("greeting").textContent = translations[lang].greeting;
-  // document.getElementById("mainPage").textContent = translations[lang].mainPage;
-  
 
   // Flag rasmini yangilash
   updateFlag(lang);
@@ -554,49 +564,6 @@ hamburger.addEventListener('click', () => {
   navItem.classList.toggle("display")
 
 })
-
-
-
-
-
-
-// // Elementlarni olish
-// let modal = document.getElementById("myModal");
-// let btn = document.getElementById("openModalBtn");
-// let span = document.getElementsByClassName("close")[0];
-
-// // Tugmani bosganda modalni ochish
-// btn.onclick = function() {
-//     modal.style.display = "block";
-//     document.body.style.overflow = "hidden"; // Skrollni yo'qotish
-// }
-
-// // Yopish tugmasini bosganda modalni yopish
-// span.onclick = function() {
-//     modal.style.display = "none";
-//     document.body.style.overflow = "auto"; // Skrollni qayta yoqish
-// }
-
-// // Modal tashqarisiga bosilganda modalni yopish
-// window.onclick = function(event) {
-//     if (event.target == modal) {
-//         modal.style.display = "none";
-//         document.body.style.overflow = "auto"; // Skrollni qayta yoqish
-//     }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
 var swiper = new Swiper(".mySwiper", {
   spaceBetween: 30,
   centeredSlides: true,
@@ -613,25 +580,6 @@ var swiper = new Swiper(".mySwiper", {
     prevEl: ".swiper-button-prev",
   },
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
