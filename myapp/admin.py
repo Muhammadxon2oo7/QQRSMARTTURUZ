@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Category, Article, User, TourismPlace, TourismPlaceImage, Reclama, Comment, Rating
+from .models import Category, Article, User, TourismPlace, TourismPlaceImage, Reclama, Comment, Rating, Like, UserTourismPlace, UserTourismPlaceImage
 
 # Category uchun Admin panelini sozlash
 class CategoryAdmin(admin.ModelAdmin):
@@ -28,10 +28,19 @@ class TourismPlaceImageInline(admin.TabularInline):
     model = TourismPlaceImage
     extra = 1  # Bo'sh rasm kiritish maydonlari soni (kerak bo'lsa, ko'paytirishingiz mumkin)
 
+
+class UserTourismPlaceImageInline(admin.TabularInline):
+    model = UserTourismPlaceImage
+    extra = 1
+
 # TourismPlace modelini admin interfeysida sozlash
 class TourismPlaceAdmin(admin.ModelAdmin):
     list_display = ('title', 'price', 'duration', 'places_count')  # Admin interfeysida ko'rinadigan maydonlar (list view uchun)
     inlines = [TourismPlaceImageInline]  # Rasmlarni qo'shish uchun inline modelni qo'shish
+
+class UserTourismPlaceAdmin(admin.ModelAdmin):
+    list_display = ('title', 'price', 'duration', 'places_count')  # Admin interfeysida ko'rinadigan maydonlar (list view uchun)
+    inlines = [UserTourismPlaceImageInline]  # Ras
 
 # Reclamani admin panaliga qo'shish uchun
 class ReclamaAdmin(admin.ModelAdmin):
@@ -49,6 +58,11 @@ class RatingAdmin(admin.ModelAdmin):
     list_filter = ('user', 'place', 'stars',)
     search_fields = ('user', 'place', 'stars',)
 
+class LikeAdmin(admin.ModelAdmin):
+    list_display = ('article', 'user', 'liked',)
+    list_filter = ('article', 'user', 'liked',)
+    search_fields = ('article', 'user', 'liked',)
+
 
 # Modellarni admin saytiga ro'yxatdan o'tkazish
 admin.site.register(TourismPlace, TourismPlaceAdmin)
@@ -61,3 +75,6 @@ admin.site.register(Article, ArticleAdmin)
 admin.site.register(User, AccountsAdmin)
 admin.site.register(Reclama, ReclamaAdmin)
 admin.site.register(Rating, RatingAdmin)
+admin.site.register(Like, LikeAdmin)
+admin.site.register(UserTourismPlace, UserTourismPlaceAdmin)
+admin.site.register(UserTourismPlaceImage)  

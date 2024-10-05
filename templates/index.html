@@ -7,33 +7,35 @@
 <!-- new main -->
 <style>
     /* Karuselning asosiy tuzilmasi */
-.carousel-container {
-    position: relative;
-    inset: 0;
-    width: 100%;
-    height: 300px;
-    overflow: hidden;
+    .carousel-container {
+        position: relative;
+        inset: 0;
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
 
-}
+    }
 
-.carousel-wrapper {
-    display: flex;
-    height: 300px;
-    transition: transform 0.5s ease-in-out;
-}
+    .carousel-wrapper {
+        display: flex;
+        height: 300px;
+        transition: transform 0.5s ease-in-out;
+    }
 
-.carousel-slide {
-    min-width: 100%;
-    height: 300px;
-    box-sizing: border-box;
-}
+    .carousel-slide {
+        min-width: 100%;
+        height: 300px;
+        box-sizing: border-box;
+    }
 
-.carousel-image {
-    max-width: 100%; /* Rasm kengligi konteynerni to'liq qoplaydi */
-    max-height: 100%; /* Rasm balandligi konteyner balandligiga sig'adi */
-    object-fit: fill;
-    display: block;
-}
+    .carousel-image {
+        max-width: 100%;
+        /* Rasm kengligi konteynerni to'liq qoplaydi */
+        max-height: 100%;
+        /* Rasm balandligi konteyner balandligiga sig'adi */
+        object-fit: fill;
+        display: block;
+    }
 </style>
 <main>
     <section class="banner" id="first-section">
@@ -289,40 +291,42 @@
             <div class="content">
                 <div class="cards__wrapper">
                     {% for place in places %}
-    <div class="cardd">
-        <a href="{% url 'turinfo' place.id %}">
-            <!-- Karusel tuzilishi -->
-            <!-- Karusel tuzilishi -->
-            <div class="carousel-container">
-                <div class="carousel-wrapper">
-                    {% for image in place.images.all %}
-                    <div class="carousel-slide">
-                        
-                        <img  class="carousel-image" src="{{ image.image.url }}" alt="">
-                        
+                    <div class="cardd">
+                        <a href="{% url 'turinfo' place.id %}">
+                            <!-- Karusel tuzilishi -->
+                            <!-- Karusel tuzilishi -->
+                            <div class="carousel-container">
+                                <div class="carousel-wrapper">
+                                    {% for image in place.images.all %}
+                                    <div class="carousel-slide">
+
+                                        <img class="carousel-image" src="{{ image.image.url }}" alt="">
+
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="info">
+                                <h2 class="title">{{ place.title }}</h2>
+                                <p style="display: flex; align-items: center;">
+                                    <img style="width: 20px; height: 20px; margin-right: 5px;"
+                                        src="{% static 'img/turinfo/star.png' %}" alt="">
+                                    {{ place.average_rating }} ({{ place.rating_count }} ovoz)
+                                </p>
+                                <br>
+                                <p class="dec">{{ place.text }}</p>
+                            </div>
+
+                            <button class="apply__btn"
+                                style="display: flex; align-items: center; justify-content: center;">
+                                <a href="tel:+998971971283">
+                                    <img src="{% static 'img/applytur.png' %}" alt="">
+                                </a>
+                            </button>
+                        </a>
                     </div>
                     {% endfor %}
-                </div>
-            </div>
-
-            <div class="info">
-                <h2 class="title">{{ place.title }}</h2>
-                <p style="display: flex; align-items: center;">
-                    <img style="width: 20px; height: 20px; margin-right: 5px;" src="{% static 'img/turinfo/star.png' %}" alt="">
-                    {{ place.average_rating }} ({{ place.rating_count }} ovoz)
-                </p>
-                <br>
-                <p class="dec">{{ place.text }}</p>
-            </div>
-            
-            <button class="apply__btn" style="display: flex; align-items: center; justify-content: center;">
-                <a href="tel:+998971971283">
-                    <img src="{% static 'img/applytur.png' %}" alt="">
-                </a>
-            </button>
-        </a>
-    </div>
-{% endfor %}
 
 
 
@@ -368,23 +372,23 @@
     </section>
 </main>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-    const wrapper = document.querySelector(".carousel-wrapper");
-    const slides = document.querySelectorAll(".carousel-slide");
-    const totalSlides = slides.length;
-    let currentSlide = 0;
+    document.addEventListener("DOMContentLoaded", function () {
+        const wrapper = document.querySelector(".carousel-wrapper");
+        const slides = document.querySelectorAll(".carousel-slide");
+        const totalSlides = slides.length;
+        let currentSlide = 0;
 
-    function showSlide(index) {
-        const slideWidth = slides[0].clientWidth;  // Har bir slaydning kengligini olish
-        wrapper.style.transform = `translateX(${-index * slideWidth}px)`;  // Slaydni siljitish
-    }
+        function showSlide(index) {
+            const slideWidth = slides[0].clientWidth;  // Har bir slaydning kengligini olish
+            wrapper.style.transform = `translateX(${-index * slideWidth}px)`;  // Slaydni siljitish
+        }
 
-    // Har 2 soniyada avtomatik almashish
-    setInterval(function() {
-        currentSlide = (currentSlide + 1) % totalSlides;  // Slaydlar ketma-ket almashadi
-        showSlide(currentSlide);
-    }, 2000); // 2 soniya oralig'ida almashish
-});
+        // Har 2 soniyada avtomatik almashish
+        setInterval(function () {
+            currentSlide = (currentSlide + 1) % totalSlides;  // Slaydlar ketma-ket almashadi
+            showSlide(currentSlide);
+        }, 2000); // 2 soniya oralig'ida almashish
+    });
 
 </script>
 <script src="{% static 'app.js' %}"></script>

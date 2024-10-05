@@ -27,7 +27,9 @@ urlpatterns = [
     path('category/<int:category_id>/', views.articles_by_category, name='articles_by_category'),
     path('turinfo/<int:place_id>/', views.turinfo, name='turinfo'),
     path('rate_place/<int:place_id>/', views.rate_place, name='rate_place'),
-
+    path('like/<int:article_id>/', views.like_article, name='like_article'),
+    path('userturinfo/', views.userturinfo, name='userturinfo'),  # Foydalanuvchi tanlagan kartochkalarni ko'rsatish
+    path('add_to_cart/<int:article_id>/', views.add_to_cart, name='add_to_cart'),
 ] 
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

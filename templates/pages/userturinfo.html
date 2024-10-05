@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{%  static  'css/main.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>{{places.title}}</title>
+</head>
+<style>
+    swiper-container {
+        width: auto;
+        height: 400px;
+        margin-bottom: 20px;
+    }
+
+    swiper-slide {
+        background-position: center;
+        background-size: cover;
+    }
+
+    swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 400px;
+    }
+</style>
+
+<body>
+    {% include 'header.html' %}
+
+
+    <section class="turinfo">
+        <div class="container">
+            {% for place in user_places %}
+            <div class="carousel-container">
+                <div class="carousel-wrapper">
+                    {% for image in place.images.all %}
+                    <div class="carousel-slide">
+                        <img class="carousel-image" src="{{ image.image.url }}" alt="">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="leftcontent">
+                <h2>{{ place.title }}</h2>
+                <p>{{ place.text }}</p>
+                <div class="details">
+                    <div class="more__info">
+                        <div class="time">
+                            <img src="{% static 'img/turinfo/time.png' %}" alt="">
+                            <p>{{ place.duration }} kun</p>
+                        </div>
+                        <div class="time">
+                            <img src="{% static 'img/turinfo/member.png' %}" alt="">
+                            <p>{{ place.places_count }} ta</p>
+                        </div>
+                        <div class="time">
+                            <img src="{% static 'img/turinfo/money.png' %}" alt="">
+                            <p>{{ place.price }} $</p>
+                        </div>
+                        <div class="time">
+                            <img src="{% static 'img/turinfo/eye.png' %}" alt="">
+                            <p>{{ place.views }}</p>
+                        </div>
+                    </div>
+                    <button class="shopbtn"><a href="tel:+{{ place.phone_number }}">Bog'lanish</a></button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    {% include 'footer.html' %}
+    
+    <script>
+
+        let header = document.getElementById('main-header')
+        header.style.backgroundColor = "#9BBAD3"
+        header.style.position = 'fixed'
+        function setParentId(parentId) {
+            document.getElementById('parent_id').value = parentId;
+        }
+        document.querySelectorAll('.rate input[type="radio"]').forEach(radio => {
+            // Radio tugma tanlanganda formani yuborish
+            radio.addEventListener('change', function () {
+                document.getElementById('ratingForm').submit(); // Formani yuborish
+            });
+        });
+
+        // Barcha label elementlar uchun click event'ni qo'shish
+        document.querySelectorAll('.rate label').forEach(label => {
+            label.addEventListener('click', function () {
+                // Label bilan bog'liq radio tugmani topamiz
+                const radioId = this.getAttribute('for');
+                const radioElement = document.getElementById(radioId);
+
+                // Agar radio element mavjud bo'lsa, uni tanlaymiz va formani yuboramiz
+                if (radioElement) {
+                    radioElement.checked = true; // Radio tugmani tanlaymiz
+                    radioElement.dispatchEvent(new Event('change')); // Change hodisasini chaqiramiz
+                }
+            });
+        });
+    </script>
+    <!-- <script src="{% static 'app.js' %}"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+</body>
+
+</html>

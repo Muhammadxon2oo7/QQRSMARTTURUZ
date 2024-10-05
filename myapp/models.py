@@ -6,8 +6,11 @@ from django.contrib.auth.models import AbstractUser, PermissionsMixin, Permissio
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
 
+from django.conf import settings 
+
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    add_to_cart_limit = models.PositiveIntegerField(default=5)
 
     def __str__(self):
         return self.name
@@ -17,7 +20,8 @@ class Article(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='articles')
     title = models.CharField(max_length=200)
     text = models.TextField()
-    img = models.ImageField(upload_to='images/')
+    img = models.ImageField(upload_to='tourism_images/')
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         return self.title
@@ -34,8 +38,8 @@ class TourismPlace(models.Model):
     title = models.CharField(max_length=200)
     text = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    duration = models.CharField(max_length=80, null=True)  
-    places_count = models.CharField(max_length=80, null=True)
+    duration = models.CharField(max_length=80, null=True, default=0)  
+    places_count = models.CharField(max_length=80, null=True, default=0)
     views = models.PositiveIntegerField(default=0)  
     phone_number = models.CharField(max_length=20, blank=True, null=True) 
 
@@ -52,14 +56,47 @@ class TourismPlace(models.Model):
 
     def __str__(self):
         return self.title
+    
+class UserTourismPlace(models.Model):
+    title = models.CharField(max_length=200)
+    text = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    duration = models.CharField(max_length=80, null=True, default=0)  
+    places_count = models.CharField(max_length=80, null=True, default=0)
+    views = models.PositiveIntegerField(default=0)  
+    phone_number = models.CharField(max_length=20, blank=True, null=True) 
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_places')
+
+    def upload_to(instance, filename):
+        return 'tourism_images/{filename}'.format(filename=filename)
+    
+    img = models.ImageField(upload_to=upload_to)
+
+    def average_rating(self):
+        return self.ratings.aggregate(Avg('stars'))['stars__avg'] or 0
+    
+    def rating_count(self):
+        return self.ratings.count()
+
+    def __str__(self):
+        return self.title
 
 class TourismPlaceImage(models.Model):
+    
     place = models.ForeignKey(TourismPlace, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='tourism_images/')
 
     def __str__(self):
         return f"Image for {self.place.title}"
+    
 
+class UserTourismPlaceImage(models.Model):
+    place = models.ForeignKey(UserTourismPlace, related_name='user_images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='tourism_images/')
+
+    def __str__(self):
+        return f"Image for {self.place.title}"
 
 
 class CustomUserManager(BaseUserManager):
@@ -122,7 +159,6 @@ class TemporaryAccountData(models.Model):
     def __str__(self):
         return self.email
     
-from django.conf import settings 
 
 
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -150,3 +186,10 @@ class Comment(models.Model):
 
 
 
+class Like(models.Model):
+    article = models.ForeignKey(Article, related_name='likes', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='likes', on_delete=models.CASCADE)
+    liked = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return f"{self.user.username} liked {self.article.title}"
