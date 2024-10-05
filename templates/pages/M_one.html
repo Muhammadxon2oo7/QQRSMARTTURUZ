@@ -9,7 +9,29 @@
   <title>{{ category.name }}</title>
 </head>
 <style>
+.spanprice{
+  padding: 4px;
+  height: 40px;
+  
+  position: absolute;
+  right: -100%;
+  top: 50%;
+  visibility: hidden;
+  transition: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform: translateX(-100%) translateY(-50%);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: -1;
+}
+.spanactive{
 
+  visibility: visible;
+  transition: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+}
 </style>
 
 <body>
@@ -27,10 +49,12 @@
             <hr>
           </div>
           <p class="description">{{ article.text }}</p>
-          <div class="additional__info">    
+          <div class="additional__info" style="position: relative;">    
             <button><img src="{%  static  'img/turinfo/heart.png' %}" alt=""></button>
             <button><img src="{%  static  'img/turinfo/add.png' %}" alt=""></button>
-            <button><img src="{%  static  'img/turinfo/info.png' %}" alt=""></button>
+            <button id="pricebtn"><img src="{%  static  'img/turinfo/info.png' %}" alt=""></button>
+          <span id="spanprice" class="spanprice">100$</span>
+
           </div>
         </div>
 
@@ -54,6 +78,14 @@
     let header=document.getElementById('main-header')
     header.style.backgroundColor="#9BBAD3"
     header.style.position='fixed'
+    let pricebtns = document.querySelectorAll("#pricebtn");
+let spans = document.querySelectorAll(".spanprice");
+
+pricebtns.forEach((btn, index) => {
+  btn.addEventListener("click", () => {
+    spans[index].classList.toggle("spanactive");
+  });
+});
   </script>
     <script src="{% static 'app.js' %}"></script>
   
