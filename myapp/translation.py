@@ -6,7 +6,6 @@ from .models import Article, Category,  TourismPlace
 class ArticleTranslationOptions(TranslationOptions):
     fields = ('title', 'text')
 
-
 @register(Category)
 class CategoryTranslationOptions(TranslationOptions):
     fields = ('name',)
@@ -15,6 +14,4 @@ class CategoryTranslationOptions(TranslationOptions):
 @register(TourismPlace)
 class TourismPlaceTranslationOptions(TranslationOptions):
     fields = ('title', 'text')
-
-
 

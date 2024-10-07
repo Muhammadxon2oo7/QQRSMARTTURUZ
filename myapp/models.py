@@ -6,8 +6,11 @@ from django.contrib.auth.models import AbstractUser, PermissionsMixin, Permissio
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
 
+from django.conf import settings 
+
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    max_articles_per_category = models.SmallIntegerField(default=3)
 
     def __str__(self):
         return self.name
@@ -17,10 +20,10 @@ class Article(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='articles')
     title = models.CharField(max_length=200)
     text = models.TextField()
-    img = models.ImageField(upload_to='images/')
+    img = models.ImageField(upload_to='tourism_images/')
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
-    def __str__(self):
-        return self.title
+    
 
 class Reclama(models.Model):
     title = models.CharField(max_length=100)
@@ -34,8 +37,8 @@ class TourismPlace(models.Model):
     title = models.CharField(max_length=200)
     text = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    duration = models.CharField(max_length=80, null=True)  
-    places_count = models.CharField(max_length=80, null=True)
+    duration = models.CharField(max_length=80, null=True, default=0)  
+    places_count = models.CharField(max_length=80, null=True, default=0)
     views = models.PositiveIntegerField(default=0)  
     phone_number = models.CharField(max_length=20, blank=True, null=True) 
 
@@ -52,14 +55,17 @@ class TourismPlace(models.Model):
 
     def __str__(self):
         return self.title
+    
+
 
 class TourismPlaceImage(models.Model):
+    
     place = models.ForeignKey(TourismPlace, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='tourism_images/')
 
     def __str__(self):
         return f"Image for {self.place.title}"
-
+    
 
 
 class CustomUserManager(BaseUserManager):
@@ -122,7 +128,6 @@ class TemporaryAccountData(models.Model):
     def __str__(self):
         return self.email
     
-from django.conf import settings 
 
 
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -130,7 +135,7 @@ class Rating(models.Model):
     place = models.ForeignKey(TourismPlace, related_name="ratings", on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     stars = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         unique_together = [['user', 'place']]
@@ -150,3 +155,37 @@ class Comment(models.Model):
 
 
 
+class Like(models.Model):
+    article = models.ForeignKey(Article, related_name='likes', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='likes', on_delete=models.CASCADE)
+    liked = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return f"{self.user.username} liked {self.article.title}"
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    articles = models.ManyToManyField(Article, through='CartItem')
+    created_at = models.DateTimeField(default=timezone.now)
+
+    # For add to card
+    duration = models.CharField(max_length=80, null=True, default=0)  
+    places_count = models.CharField(max_length=80, null=True, default=0)
+    views = models.PositiveIntegerField(default=0)  
+    phone_number = models.CharField(max_length=20, blank=True, null=True) 
+
+    # def average_rating(self):
+    #     return self.ratings.aggregate(Avg('stars'))['stars__avg'] or 0
+    
+    # def rating_count(self):
+    #     return self.ratings.count()
+
+    def __str__(self):
+        return self.title  
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    added_at = models.DateTimeField(default=timezone.now)

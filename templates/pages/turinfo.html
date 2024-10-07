@@ -40,11 +40,7 @@
                 effect="fade" loop="true" autoplay-delay="2500" autoplay-disable-on-interaction="false"
                  navigation="true">{% for image in places.images.all %}
                 <swiper-slide>
-
-
                     <img class="swiperr-slide" src="{{ image.image.url }}" alt="">
-
-
                 </swiper-slide> {% endfor %}
 
             </swiper-container>

@@ -7,62 +7,69 @@
 <!-- new main -->
 <style>
     /* Karuselning asosiy tuzilmasi */
-.carousel-container {
-    position: relative;
-    inset: 0;
-    width: 100%;
-    height: 300px;
-    overflow: hidden;
+    .carousel-container {
+        position: relative;
+        inset: 0;
+        width: 100%;
+        height: 300px;
+        overflow: hidden;
 
-}
-
-.carousel-wrapper {
-    display: flex;
-    height: 300px;
-    transition: transform 0.5s ease-in-out;
-}
-
-.carousel-slide {
-    min-width: 100%;
-    height: 300px;
-    box-sizing: border-box;
-}
-
-.carousel-image {
-    max-width: 100%; /* Rasm kengligi konteynerni to'liq qoplaydi */
-    max-height: 100%; /* Rasm balandligi konteyner balandligiga sig'adi */
-    object-fit: fill;
-    display: block;
-}
-.test-mode-banner {
-    background-color: #ffcc00;
-    color: red;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    margin-bottom: 10px;
-}
-
-.test-mode-banner p {
-    display:flex;
-    /* padding-left: 100%; Matnning boshlang'ich joyi */
-    animation: scrollText 15s linear infinite; /* Animatsiya */
-}
-
-@keyframes scrollText {
-    0% {
-        transform: translateX(100%);
     }
-    100% {
-        transform: translateX(-100%);
-    }
-}
 
+    .carousel-wrapper {
+        display: flex;
+        height: 300px;
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .carousel-slide {
+        min-width: 100%;
+        height: 300px;
+        box-sizing: border-box;
+    }
+
+    .carousel-image {
+        max-width: 100%;
+        /* Rasm kengligi konteynerni to'liq qoplaydi */
+        max-height: 100%;
+        /* Rasm balandligi konteyner balandligiga sig'adi */
+        object-fit: fill;
+        display: block;
+    }
+
+    .test-mode-banner {
+        background-color: #ffcc00;
+        color: red;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+
+    .test-mode-banner p {
+        display: flex;
+        /* padding-left: 100%; Matnning boshlang'ich joyi */
+        animation: scrollText 15s linear infinite;
+        /* Animatsiya */
+    }
+
+    @keyframes scrollText {
+        0% {
+            transform: translateX(100%);
+        }
+
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+
+    /* 
+>>>>>>> dda3476624443062c986c8188dae4c01a69c3468 */
 </style>
 <main>
     <section class="banner" id="first-section">
@@ -321,41 +328,85 @@
             </div>
             <div class="content">
                 <div class="cards__wrapper">
+                    {% if cart_items %}
+                    <div class="cardd">
+                        <a href="{% url 'cart_view' %}">
+                            <div class="carousel-container">
+                                <div class="carousel-wrapper">
+                                    {% for item in cart_items %}
+                                    <div class="carousel-slide">
+                                        <img class="carousel-image" src="{{ item.article.img.url }}" alt="Add To Card">
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="info">
+                                <h2 class="title">Sizning Turizm Paketingiz</h2>
+                                <p style="display: flex; align-items: center;">
+                                    {{ cart_items.count }} ta mahsulot tanlangan
+                                </p>
+                                <br>
+                                <p class="dec">
+                                    {% for item in cart_items %}
+                                    {{ item.article.title }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </p>
+                            </div>
+
+                            <button class="apply__btn"
+                                style="display: flex; align-items: center; justify-content: center;">
+                                <a href="tel:+998971971283">
+                                    <img src="{% static 'img/applytur.png' %}" alt="">
+                                </a>
+                            </button>
+                        </a>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Qidirish uchun  -->
+                    <form action="{% url 'search' %}" method="get">
+                        <input type="text" name="query" placeholder="Joy nomini qidiring...">
+                        <button type="submit">Qidirish</button>
+                    </form>
+
                     {% for place in places %}
-    <div class="cardd">
-        <a href="{% url 'turinfo' place.id %}">
-            <!-- Karusel tuzilishi -->
-            <!-- Karusel tuzilishi -->
-            <div class="carousel-container">
-                <div class="carousel-wrapper">
-                    {% for image in place.images.all %}
-                    <div class="carousel-slide">
-                        
-                        <img  class="carousel-image" src="{{ image.image.url }}" alt="">
-                        
+                    <div class="cardd">
+                        <a href="{% url 'turinfo' place.id %}">
+                            <!-- Karusel tuzilishi -->
+                            <!-- Karusel tuzilishi -->
+                            <div class="carousel-container">
+                                <div class="carousel-wrapper">
+                                    {% for image in place.images.all %}
+                                    <div class="carousel-slide">
+
+                                        <img class="carousel-image" src="{{ image.image.url }}" alt="">
+
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="info">
+                                <h2 class="title">{{ place.title }}</h2>
+                                <p style="display: flex; align-items: center;">
+                                    <img style="width: 20px; height: 20px; margin-right: 5px;"
+                                        src="{% static 'img/turinfo/star.png' %}" alt="">
+                                    {{ place.average_rating }} ({{ place.rating_count }} ovoz)
+                                </p>
+                                <br>
+                                <p class="dec">{{ place.text }}</p>
+                            </div>
+
+                            <button class="apply__btn"
+                                style="display: flex; align-items: center; justify-content: center;">
+                                <a href="tel:+998971971283">
+                                    <img src="{% static 'img/applytur.png' %}" alt="">
+                                </a>
+                            </button>
+                        </a>
                     </div>
                     {% endfor %}
-                </div>
-            </div>
-
-            <div class="info">
-                <h2 class="title">{{ place.title }}</h2>
-                <p style="display: flex; align-items: center;">
-                    <img style="width: 20px; height: 20px; margin-right: 5px;" src="{% static 'img/turinfo/star.png' %}" alt="">
-                    {{ place.average_rating }} ({{ place.rating_count }} ovoz)
-                </p>
-                <br>
-                <p class="dec">{{ place.text }}</p>
-            </div>
-            
-            <button class="apply__btn" style="display: flex; align-items: center; justify-content: center;">
-                <a href="tel:+998971971283">
-                    <img src="{% static 'img/applytur.png' %}" alt="">
-                </a>
-            </button>
-        </a>
-    </div>
-{% endfor %}
 
 
 
@@ -401,23 +452,23 @@
     </section>
 </main>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-    const wrapper = document.querySelector(".carousel-wrapper");
-    const slides = document.querySelectorAll(".carousel-slide");
-    const totalSlides = slides.length;
-    let currentSlide = 0;
+    document.addEventListener("DOMContentLoaded", function () {
+        const wrapper = document.querySelector(".carousel-wrapper");
+        const slides = document.querySelectorAll(".carousel-slide");
+        const totalSlides = slides.length;
+        let currentSlide = 0;
 
-    function showSlide(index) {
-        const slideWidth = slides[0].clientWidth;  // Har bir slaydning kengligini olish
-        wrapper.style.transform = `translateX(${-index * slideWidth}px)`;  // Slaydni siljitish
-    }
+        function showSlide(index) {
+            const slideWidth = slides[0].clientWidth;  // Har bir slaydning kengligini olish
+            wrapper.style.transform = `translateX(${-index * slideWidth}px)`;  // Slaydni siljitish
+        }
 
-    // Har 2 soniyada avtomatik almashish
-    setInterval(function() {
-        currentSlide = (currentSlide + 1) % totalSlides;  // Slaydlar ketma-ket almashadi
-        showSlide(currentSlide);
-    }, 2000); // 2 soniya oralig'ida almashish
-});
+        // Har 2 soniyada avtomatik almashish
+        setInterval(function () {
+            currentSlide = (currentSlide + 1) % totalSlides;  // Slaydlar ketma-ket almashadi
+            showSlide(currentSlide);
+        }, 2000); // 2 soniya oralig'ida almashish
+    });
 
 </script>
 <script src="{% static 'app.js' %}"></script>

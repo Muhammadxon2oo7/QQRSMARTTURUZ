@@ -6,26 +6,35 @@ from django.contrib.auth.models import User
 # import
 from django.core.mail import send_mail
 from django.views import View
-from .models import User, TemporaryAccountData, TourismPlace, Reclama, Category, Comment, Rating
-
+from .models import User, TemporaryAccountData, TourismPlace, Reclama, Category, Comment, Rating, Like, Article, Cart, CartItem
+from django.contrib import messages
+from django.db.models import Q
 # Create your views here.
 
 def home(request):
-    places = TourismPlace.objects.all()
-    news = Reclama.objects.all()
-    categories = Category.objects.all()
-    return render(request, 'index.html', {"places": places, "news": news, 'categories': categories})
+    query = request.GET.get('query', '')
+    if query:
+        
+        places = TourismPlace.objects.filter(
+            Q(title__icontains=query) | Q(text__icontains=query)
+        )
+    else:
+        places = TourismPlace.objects.all()
 
-def index(request):
-    places = TourismPlace.objects.all()
+
+
     news = Reclama.objects.all()
     categories = Category.objects.all()
-    return render(request, 'index.html', {"places": places, "news": news, 'categories': categories})
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        cart_items = CartItem.objects.filter(cart=cart)
+    return render(request, 'index.html', {"places": places, "news": news, 'categories': categories, 'cart_items': cart_items})
 
 def articles_by_category(request, category_id):
     category = get_object_or_404(Category, id=category_id)
     articles = category.articles.all()
-    return render(request, 'pages/M_one.html', {'articles': articles, 'category': category})
+    user_likes = Like.objects.filter(user=request.user, liked=True).values_list('article_id', flat=True) if request.user.is_authenticated else []
+    return render(request, 'pages/M_one.html', {'articles': articles, 'category': category, 'user_likes': user_likes})
 
 from django.utils import timezone
 
@@ -41,6 +50,85 @@ def rate_place(request, place_id):
         )
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     return HttpResponseRedirect('/login/')
+
+def like_article(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    like, created = Like.objects.get_or_create(user=request.user, article=article)
+    
+    if not created:
+        like.liked = not like.liked
+        like.save()
+
+    return redirect('articles_by_category', category_id=article.category.id)
+
+
+def add_to_cart(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+
+    if request.user.is_authenticated:
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        category = article.category
+        category_article_count = CartItem.objects.filter(cart=cart, article__category=category).count()
+        max_articles_per_category = category.max_articles_per_category
+        if category_article_count >= max_articles_per_category:
+            messages.error(request, f"Bu kategoriyadan {max_articles_per_category} ta mahsulotdan ko'p qo'sha olmaysiz.")
+        else:
+            # Agar bunday kart item mavjud bo'lmasa, yangi qo'shish
+            cart_item_exists = CartItem.objects.filter(cart=cart, article=article).exists()
+
+            if not cart_item_exists:
+                CartItem.objects.create(cart=cart, article=article)
+                messages.success(request, "Mahsulot savatchaga qo'shildi.")
+            else:
+                messages.info(request, "Bu mahsulot allaqachon savatchada mavjud.")
+
+    else:
+        return redirect('login')
+
+    return redirect('cart_view')
+
+def remove_from_cart(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+
+    if request.user.is_authenticated:
+        cart = get_object_or_404(Cart, user=request.user)
+        CartItem.objects.filter(cart=cart, article=article).delete()
+    else:
+        return redirect('login')
+    return redirect('cart_view') 
+
+def cart_view(request):
+    cart_items = []
+    total_price = 0 
+    images = []
+
+    if request.user.is_authenticated:
+        cart = get_object_or_404(Cart, user=request.user)
+        cart_items = CartItem.objects.filter(cart=cart)
+
+        for item in cart_items:
+            total_price += item.article.price
+
+        for item in cart_items:
+            images.append(item.article.img.url)
+
+        cart_data = {
+            'duration': cart.duration,
+            'places_count': cart.places_count,
+            'views': cart.views,
+            'phone_number': cart.phone_number,
+            # 'average_rating': cart.average_rating(),
+            # 'rating_count': cart.rating_count(),
+            'total_price': total_price
+        }
+
+        return render(request, 'pages/cart.html', {
+            'cart_items': cart_items,
+            'images': images,
+            'cart_data': cart_data
+        })
+    else:
+        return redirect('login')
 
 def turinfo(request, place_id):
     places = get_object_or_404(TourismPlace, id=place_id)
