@@ -21,7 +21,7 @@ def home(request):
     else:
         places = TourismPlace.objects.all()
 
-
+    cart_items = []
 
     news = Reclama.objects.all()
     categories = Category.objects.all()
