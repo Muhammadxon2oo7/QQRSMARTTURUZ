@@ -27,6 +27,13 @@
             <hr>
           </div>
           <p class="description">{{ article.text }}</p>
+          {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
           <div class="additional__info">
             <button>
               <a href="{% url 'like_article' article.id %}">
@@ -61,9 +68,9 @@
       <p style="color: red;">Bu kategoriya uchun maqolalar mavjud emas.</p>
       {% endif %}
     </div>
-    {% include 'footer.html' %}
 
   </section>
+  {% include 'footer.html' %}
   <script>
     let header = document.getElementById('main-header')
     header.style.backgroundColor = "#9BBAD3"

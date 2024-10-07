@@ -17,7 +17,8 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('index.html', views.index, name='index'),  
+    path('index.html', views.home, name='index'),  
+    path('search/', views.home, name='search'),
     path('register/', views.RegisterView.as_view(), name='register'),
     path('login', views.LoginView.as_view(), name='login'),
     path('password_reset/', views.password_reset, name='password_reset'),
@@ -28,8 +29,9 @@ urlpatterns = [
     path('turinfo/<int:place_id>/', views.turinfo, name='turinfo'),
     path('rate_place/<int:place_id>/', views.rate_place, name='rate_place'),
     path('like/<int:article_id>/', views.like_article, name='like_article'),
-    path('userturinfo/', views.userturinfo, name='userturinfo'),  # Foydalanuvchi tanlagan kartochkalarni ko'rsatish
     path('add_to_cart/<int:article_id>/', views.add_to_cart, name='add_to_cart'),
+    path('remove-from-cart/<int:article_id>/', views.remove_from_cart, name='remove_from_cart'),  
+    path('cart/', views.cart_view, name='cart_view'),
 ] 
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

@@ -2,12 +2,12 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Category, Article, User, TourismPlace, TourismPlaceImage, Reclama, Comment, Rating, Like, UserTourismPlace, UserTourismPlaceImage
+from .models import Category, Article, User, TourismPlace, TourismPlaceImage, Reclama, Comment, Rating, Like
 
 # Category uchun Admin panelini sozlash
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name',)  # Admin ro'yxatida ko'rsatiladigan ustunlar
-    search_fields = ('name',)  # Qidiruv maydoniga asoslangan ustunlar
+    list_display = ('name', 'max_articles_per_category')  # Admin ro'yxatida ko'rsatiladigan ustunlar
+    search_fields = ('name', 'max_articles_per_category')  # Qidiruv maydoniga asoslangan ustunlar
 
 # Article uchun Admin panelini sozlash
 class ArticleAdmin(admin.ModelAdmin):
@@ -29,18 +29,11 @@ class TourismPlaceImageInline(admin.TabularInline):
     extra = 1  # Bo'sh rasm kiritish maydonlari soni (kerak bo'lsa, ko'paytirishingiz mumkin)
 
 
-class UserTourismPlaceImageInline(admin.TabularInline):
-    model = UserTourismPlaceImage
-    extra = 1
-
 # TourismPlace modelini admin interfeysida sozlash
 class TourismPlaceAdmin(admin.ModelAdmin):
     list_display = ('title', 'price', 'duration', 'places_count')  # Admin interfeysida ko'rinadigan maydonlar (list view uchun)
     inlines = [TourismPlaceImageInline]  # Rasmlarni qo'shish uchun inline modelni qo'shish
 
-class UserTourismPlaceAdmin(admin.ModelAdmin):
-    list_display = ('title', 'price', 'duration', 'places_count')  # Admin interfeysida ko'rinadigan maydonlar (list view uchun)
-    inlines = [UserTourismPlaceImageInline]  # Ras
 
 # Reclamani admin panaliga qo'shish uchun
 class ReclamaAdmin(admin.ModelAdmin):
@@ -76,5 +69,3 @@ admin.site.register(User, AccountsAdmin)
 admin.site.register(Reclama, ReclamaAdmin)
 admin.site.register(Rating, RatingAdmin)
 admin.site.register(Like, LikeAdmin)
-admin.site.register(UserTourismPlace, UserTourismPlaceAdmin)
-admin.site.register(UserTourismPlaceImage)  
