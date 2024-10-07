@@ -12,7 +12,6 @@
 .spanprice{
   padding: 4px;
   height: 40px;
-  
   position: absolute;
   right: -100%;
   top: 50%;
@@ -27,7 +26,6 @@
   z-index: -1;
 }
 .spanactive{
-
   visibility: visible;
   transition: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
@@ -49,12 +47,6 @@
             <hr>
           </div>
           <p class="description">{{ article.text }}</p>
-          <div class="additional__info" style="position: relative;">    
-            <button><img src="{%  static  'img/turinfo/heart.png' %}" alt=""></button>
-            <button><img src="{%  static  'img/turinfo/add.png' %}" alt=""></button>
-            <button id="pricebtn"><img src="{%  static  'img/turinfo/info.png' %}" alt=""></button>
-          <span id="spanprice" class="spanprice">100$</span>
-
           {% if messages %}
           <ul class="messages">
             {% for message in messages %}
@@ -62,7 +54,8 @@
             {% endfor %}
           </ul>
           {% endif %}
-          <div class="additional__info">
+          <div class="additional__info" style="position: relative; width: auto; display: flex; gap: 10px;
+          justify-content: flex-start;">
             <button>
               <a href="{% url 'like_article' article.id %}">
                 {% if article.id in user_likes %}
@@ -77,8 +70,8 @@
                 <img src="{% static 'img/turinfo/add.png' %}" alt="Add to Cart">
               </a>
             </button>
-            <button><img src="{%  static  'img/turinfo/info.png' %}" alt=""></button>
-            <span id="spanprice" class="spanprice">Price: {{ article.price }} $</span>
+            <button id="pricebtn"><img src="{%  static  'img/turinfo/info.png' %}" alt=""></button>
+            <span id="spanprice" class="spanprice">{{ article.price }} $</span>
           </div>
         </div>
 
@@ -102,17 +95,15 @@
     let header=document.getElementById('main-header')
     header.style.backgroundColor="#9BBAD3"
     header.style.position='fixed'
+    
     let pricebtns = document.querySelectorAll("#pricebtn");
-let spans = document.querySelectorAll(".spanprice");
+    let spans = document.querySelectorAll(".spanprice");
 
 pricebtns.forEach((btn, index) => {
   btn.addEventListener("click", () => {
     spans[index].classList.toggle("spanactive");
   });
 });
-    let header = document.getElementById('main-header')
-    header.style.backgroundColor = "#9BBAD3"
-    header.style.position = 'fixed'
   </script>
   <script src="{% static 'app.js' %}"></script>
 
