@@ -138,11 +138,14 @@ def turinfo(request, place_id):
     comments = places.comments.filter(parent=None)[::-1] 
     comments_with_stars = []
 
-    
+
     for comment in comments:
         user_rating = Rating.objects.filter(user=comment.user, place=places).first()
-        star_range = range(user_rating.stars) if user_rating else []
-        comments_with_stars = star_range
+        if user_rating:
+            stars_list = list(range(user_rating.stars))  # Convert range to list
+            comments_with_stars.append((comment.id, stars_list))
+        else:
+            comments_with_stars.append((comment.id, [])) 
     print(comments_with_stars)
     if request.method == 'POST':
         text = request.POST.get('comment')
@@ -158,7 +161,7 @@ def turinfo(request, place_id):
             return redirect('turinfo', place_id=place_id)
         else:
             return redirect('register/')  
-    return render(request, 'pages/turinfo.html', {'places': places, 'comments': comments, 'stars': stars, 'ratings_dict': comments_with_stars})
+    return render(request, 'pages/turinfo.html', {'places': places, 'comments': comments, 'stars': stars, 'comments_with_stars': comments_with_stars})
 
 from django.contrib.auth import get_user_model
 User = get_user_model()

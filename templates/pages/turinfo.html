@@ -28,17 +28,16 @@
         width: 100%;
         height: 400px;
     }
-
 </style>
 
 <body>
-    {% include 'header.html' %}    
+    {% include 'header.html' %}
     <section class="turinfo">
 
         <div class="container">
             <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" space-between="30"
                 effect="fade" loop="true" autoplay-delay="2500" autoplay-disable-on-interaction="false"
-                 navigation="true">{% for image in places.images.all %}
+                navigation="true">{% for image in places.images.all %}
                 <swiper-slide>
                     <img class="swiperr-slide" src="{{ image.image.url }}" alt="">
                 </swiper-slide> {% endfor %}
@@ -55,7 +54,7 @@
                     <div class="more__info">
                         <div class="time">
                             <img src="{% static 'img/turinfo/time.png' %}" alt="">
-                            <p >{{places.duration}} <span id="day">kun</span></p>
+                            <p>{{places.duration}} <span id="day">kun</span></p>
                         </div>
                         <div class="time">
                             <img src="{% static 'img/turinfo/member.png' %}" alt="">
@@ -70,22 +69,22 @@
                             <p>{{places.views}}</p>
                         </div>
                         <div class="star__panel">
-                            <form method="POST"  action="{% url 'rate_place' places.id %}" id="ratingForm">
-                               <div class="strw rate">
-                                {% csrf_token %}
-                                {% for star in stars %}
-                                <input type="radio" id="star{{star}}" name="rate" value="{{star}}" />
-                                <label for="star{{star}}" title="{{star}} stars"></label>
-                                {% endfor %}
-                               </div>
-                                <!-- <button type="submit">Baholash</button> -->
+                            <form method="POST" action="{% url 'rate_place' places.id %}" id="ratingForm">
+                                <div class="strw rate">
+                                    {% csrf_token %}
+                                    {% for star in stars %}
+                                    <input type="radio" id="star{{star}}" name="rate" value="{{star}}" />
+                                    <label for="star{{star}}" title="{{star}} stars"></label>
+                                    {% endfor %}
+                                </div>
                             </form>
                         </div>
                         <!-- <p>Ko'rishlar soni: {{ places.views }}</p> -->
                     </div>
                     <button class="shopbtn"><a style="width: 100%;
                     height: 100%; display: flex;
-                    justify-content: center; align-items: center;" href="tel:+{{places.phone_number}}" id="contactpl">Bog'lanish</a></button>
+                    justify-content: center; align-items: center;" href="tel:+{{places.phone_number}}"
+                            id="contactpl">Bog'lanish</a></button>
                 </div>
 
             </div>
@@ -98,24 +97,31 @@
                     <li class="{% if comment.user == request.user %}bright{% else %}bleft{% endif %}">
                         <div class="comment__text__wrapper ">
                             <div class="allcomment__wrapper">
-                                <div class="comment__buble {% if comment.user == request.user %}right{% else %}left{% endif %}">
-                                {% for i in ratings_dict %}
-                                <span>⭐</span>
-                                {% endfor %}
-                                <h3 class="comment__users__name">{{ comment.user.first_name }}</h3>
-                                <p class="comment__text">{{ comment.text }}</p>
-                                <button class="replybtn" onclick="setParentId('{{ comment.id }}');"><a href="#txtarea" id="replyc">Javob berish</a></button>
+                                <div
+                                    class="comment__buble {% if comment.user == request.user %}right{% else %}left{% endif %}">
+                                    {% for comment_id, stars in comments_with_stars %}
+                                    {% if comment_id == comment.id %}
+                                    {% for star in stars %}
+                                    <span>⭐</span>
+                                    {% endfor %}
+                                    {% endif %}
+                                    {% endfor %}        
+                                    <h3 class="comment__users__name">{{ comment.user.first_name }}</h3>
+                                    <p class="comment__text">{{ comment.text }}</p>
+                                    <button class="replybtn" onclick="setParentId('{{ comment.id }}');"><a
+                                            href="#txtarea" id="replyc">Javob berish</a></button>
                                 </div>
                                 <p class="comment__time">{{ comment.created_at }}</p>
                                 {% for reply in comment.replies.all %}
                             </div>
                             <div class="allcomment__wrapper ">
-                                <div class="comment__buble color {% if comment.user == request.user %}right{% else %}left{% endif %}">
-                                <h2 class="comment__users__name">{{ reply.user.first_name }}</h2>
-                                <p class="comment__text">{{ reply.text }}</p>
-                            </div>
-                            <p class="comment__time">{{ reply.created_at }}</p>
-                            {% endfor %}
+                                <div
+                                    class="comment__buble color {% if comment.user == request.user %}right{% else %}left{% endif %}">
+                                    <h2 class="comment__users__name">{{ reply.user.first_name }}</h2>
+                                    <p class="comment__text">{{ reply.text }}</p>
+                                </div>
+                                <p class="comment__time">{{ reply.created_at }}</p>
+                                {% endfor %}
                             </div>
                         </div>
                     </li>
@@ -127,11 +133,11 @@
                 <div class="comment-wrapper">
                     <form method="POST">
                         {% csrf_token %}
-                        <textarea id="txtarea" name="comment" rows="4" cols="50"
-                            placeholder="Sharhingizni kiriting..." required></textarea><br>
+                        <textarea id="txtarea" name="comment" rows="4" cols="50" placeholder="Sharhingizni kiriting..."
+                            required></textarea><br>
                         <input type="hidden" name="parent_id" id="parent_id" value="">
                         <button type="submit"><img class="btnimg" src="{% static 'img/turinfo/send.png' %}" alt="">
-                            </button>
+                        </button>
                     </form>
                 </div>
                 {% else %}
@@ -153,26 +159,26 @@
             document.getElementById('parent_id').value = parentId;
         }
         document.querySelectorAll('.rate input[type="radio"]').forEach(radio => {
-  // Radio tugma tanlanganda formani yuborish
-  radio.addEventListener('change', function() {
-    document.getElementById('ratingForm').submit(); // Formani yuborish
-  });
-});
+            // Radio tugma tanlanganda formani yuborish
+            radio.addEventListener('change', function () {
+                document.getElementById('ratingForm').submit(); // Formani yuborish
+            });
+        });
 
-// Barcha label elementlar uchun click event'ni qo'shish
-document.querySelectorAll('.rate label').forEach(label => {
-  label.addEventListener('click', function() {
-    // Label bilan bog'liq radio tugmani topamiz
-    const radioId = this.getAttribute('for');
-    const radioElement = document.getElementById(radioId);
+        // Barcha label elementlar uchun click event'ni qo'shish
+        document.querySelectorAll('.rate label').forEach(label => {
+            label.addEventListener('click', function () {
+                // Label bilan bog'liq radio tugmani topamiz
+                const radioId = this.getAttribute('for');
+                const radioElement = document.getElementById(radioId);
 
-    // Agar radio element mavjud bo'lsa, uni tanlaymiz va formani yuboramiz
-    if (radioElement) {
-      radioElement.checked = true; // Radio tugmani tanlaymiz
-      radioElement.dispatchEvent(new Event('change')); // Change hodisasini chaqiramiz
-    }
-  });
-});
+                // Agar radio element mavjud bo'lsa, uni tanlaymiz va formani yuboramiz
+                if (radioElement) {
+                    radioElement.checked = true; // Radio tugmani tanlaymiz
+                    radioElement.dispatchEvent(new Event('change')); // Change hodisasini chaqiramiz
+                }
+            });
+        });
     </script>
     <!-- <script src="{% static 'app.js' %}"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
