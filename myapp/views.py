@@ -21,10 +21,9 @@ def home(request):
     else:
         places = TourismPlace.objects.all()
 
-    cart_items = []
-
     news = Reclama.objects.all()
     categories = Category.objects.all()
+    cart_items = []
     if request.user.is_authenticated:
         cart, created = Cart.objects.get_or_create(user=request.user)
         cart_items = CartItem.objects.filter(cart=cart)
