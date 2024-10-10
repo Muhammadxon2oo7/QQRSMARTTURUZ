@@ -146,7 +146,7 @@
           <div class="addinfo">
             <div class="additional__info" style="position: relative; width: auto; display: flex; gap: 10px;
             justify-content: flex-start;">
-              <button>
+              <!-- <button>
                 <a href="{% url 'like_article' article.id %}">
                   {% if article.id in user_likes %}
                   <img src="{% static 'img/turinfo/heart_red.png' %}" alt="Unlike">
@@ -154,7 +154,17 @@
                   <img src="{% static 'img/turinfo/heart.png' %}" alt="Like">
                   {% endif %}
                 </a>
-              </button>
+              </button> -->
+
+              <button onclick="likeArticle({{ article.id }})" id="like-button-{{ article.id }}">
+                {% if article.id in user_likes %}
+                    <img id="like-icon-{{ article.id }}" src="{% static 'img/turinfo/heart_red.png' %}" alt="Unlike">
+                {% else %}
+                    <img id="like-icon-{{ article.id }}" src="{% static 'img/turinfo/heart.png' %}" alt="Like">
+                {% endif %}
+            </button>
+            
+
               <!-- <button>
                 <a href="{% url 'add_to_cart' article.id %}">
                   <img src="{% static 'img/turinfo/add.png' %}" alt="Add to Cart">
@@ -276,6 +286,51 @@ pricebtns.forEach((btn, index) => {
                 }
             }, 5000); // 5 soniyadan keyin avtomatik ravishda yo'q qilinadi
         }
+        function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function likeArticle(articleId) {
+        const csrftoken = getCookie('csrftoken');
+        fetch(`/like/${articleId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Serverdan noto‘g‘ri javob olindi');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Like ikonkani yangilash
+            const likeIcon = document.getElementById(`like-icon-${articleId}`);
+            if (data.liked) {
+                likeIcon.src = '{% static "img/turinfo/heart_red.png" %}';
+                likeIcon.alt = 'Unlike';
+            } else {
+                likeIcon.src = '{% static "img/turinfo/heart.png" %}';
+                likeIcon.alt = 'Like';
+            }
+        })
+        .catch(error => {
+            console.error('Xato:', error);
+        });
+    }
   </script>
   <script src="{% static 'app.js' %}"></script>
 

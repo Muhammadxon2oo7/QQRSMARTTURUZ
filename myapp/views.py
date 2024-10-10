@@ -51,15 +51,28 @@ def rate_place(request, place_id):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     return HttpResponseRedirect('/login/')
 
-def like_article(request, article_id):
-    article = get_object_or_404(Article, id=article_id)
-    like, created = Like.objects.get_or_create(user=request.user, article=article)
+# def like_article(request, article_id):
+#     article = get_object_or_404(Article, id=article_id)
+#     like, created = Like.objects.get_or_create(user=request.user, article=article)
     
-    if not created:
-        like.liked = not like.liked
-        like.save()
+#     if not created:
+#         like.liked = not like.liked
+#         like.save()
 
-    return redirect('articles_by_category', category_id=article.category.id)
+#     return redirect('articles_by_category', category_id=article.category.id)
+@csrf_exempt
+def like_article(request, article_id):
+    if request.method == 'POST':
+        article = get_object_or_404(Article, id=article_id)
+        like, created = Like.objects.get_or_create(user=request.user, article=article)
+
+        if not created:
+            like.liked = not like.liked
+            like.save()
+
+        return JsonResponse({'liked': like.liked})
+
+    return JsonResponse({'error': 'Yaroqsiz so‘rov'}, status=400)
 
 
 # def add_to_cart(request, article_id):
