@@ -2,13 +2,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 
-
+from django.http import JsonResponse
 # import
 from django.core.mail import send_mail
 from django.views import View
 from .models import User, TemporaryAccountData, TourismPlace, Reclama, Category, Comment, Rating, Like, Article, Cart, CartItem
 from django.contrib import messages
 from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 def home(request):
@@ -61,30 +62,55 @@ def like_article(request, article_id):
     return redirect('articles_by_category', category_id=article.category.id)
 
 
+# def add_to_cart(request, article_id):
+#     article = get_object_or_404(Article, id=article_id)
+
+#     if request.user.is_authenticated:
+#         cart, created = Cart.objects.get_or_create(user=request.user)
+#         category = article.category
+#         category_article_count = CartItem.objects.filter(cart=cart, article__category=category).count()
+#         max_articles_per_category = category.max_articles_per_category
+#         if category_article_count >= max_articles_per_category:
+#             messages.error(request, f"Bu kategoriyadan {max_articles_per_category} ta mahsulotdan ko'p qo'sha olmaysiz.")
+#         else:
+#             # Agar bunday kart item mavjud bo'lmasa, yangi qo'shish
+#             cart_item_exists = CartItem.objects.filter(cart=cart, article=article).exists()
+
+#             if not cart_item_exists:
+#                 CartItem.objects.create(cart=cart, article=article)
+#                 messages.success(request, "Mahsulot savatchaga qo'shildi.")
+#             else:
+#                 messages.info(request, "Bu mahsulot allaqachon savatchada mavjud.")
+
+#     else:
+#         return redirect('login')
+
+#     return redirect('cart_view')
+
+@csrf_exempt
 def add_to_cart(request, article_id):
-    article = get_object_or_404(Article, id=article_id)
+    if request.method == 'POST':
+        article = get_object_or_404(Article, id=article_id)
 
-    if request.user.is_authenticated:
-        cart, created = Cart.objects.get_or_create(user=request.user)
-        category = article.category
-        category_article_count = CartItem.objects.filter(cart=cart, article__category=category).count()
-        max_articles_per_category = category.max_articles_per_category
-        if category_article_count >= max_articles_per_category:
-            messages.error(request, f"Bu kategoriyadan {max_articles_per_category} ta mahsulotdan ko'p qo'sha olmaysiz.")
-        else:
-            # Agar bunday kart item mavjud bo'lmasa, yangi qo'shish
+        if request.user.is_authenticated:
+            cart, created = Cart.objects.get_or_create(user=request.user)
+            category = article.category
+            category_article_count = CartItem.objects.filter(cart=cart, article__category=category).count()
+            max_articles_per_category = category.max_articles_per_category
+
+            if category_article_count >= max_articles_per_category:
+                return JsonResponse({'status': 'error', 'message': f"Bu kategoriyadan {max_articles_per_category} ta mahsulotdan ko'p qo'sha olmaysiz."})
+            
             cart_item_exists = CartItem.objects.filter(cart=cart, article=article).exists()
-
             if not cart_item_exists:
                 CartItem.objects.create(cart=cart, article=article)
-                messages.success(request, "Mahsulot savatchaga qo'shildi.")
+                return JsonResponse({'status': 'success', 'message': "Mahsulot savatchaga qo'shildi."})
             else:
-                messages.info(request, "Bu mahsulot allaqachon savatchada mavjud.")
-
-    else:
-        return redirect('login')
-
-    return redirect('cart_view')
+                return JsonResponse({'status': 'info', 'message': "Bu mahsulot allaqachon savatchada mavjud."})
+        
+        return JsonResponse({'status': 'error', 'message': "Iltimos, avval tizimga kiring."})
+    
+    return JsonResponse({'status': 'error', 'message': "Yaroqsiz so'rov."})
 
 def remove_from_cart(request, article_id):
     article = get_object_or_404(Article, id=article_id)

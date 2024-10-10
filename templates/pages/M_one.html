@@ -30,10 +30,89 @@
   transition: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
 }
+#alerts-container {
+    position: fixed; /* Alertlar har doim ko'rinadigan qilib qo'yiladi */
+    top: 10px; /* Sahifaning yuqori qismidan 10px */
+    right: 10px; /* Sahifaning o'ng chetidan 10px */
+    z-index: 1000; /* Alertlarni boshqa elementlardan ustun qilish uchun */
+    display: flex;
+    flex-direction: column; /* Alertlarni ketma-ket joylashtirish uchun */
+    align-items: flex-end; /* Alertlarni o'ngga joylashtirish uchun */
+    gap: 10px; /* Alertlar orasidagi bo'shliq */
+}
+
+.alert {
+    position: relative; /* Alert konteynerga nisbatan joylashadi */
+    width: 400px; /* Alert kengligi */
+    padding: 15px;
+    border-radius: 5px;
+    line-height: 1.5;
+    font-family: sans-serif;
+    font-weight: 400;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Soyalar bilan aniqroq qilish */
+    cursor: pointer;
+}
+
+.alertCheckbox {
+    display: none; /* Checkboxni yashirish */
+}
+
+.alertText {
+    display: block;
+    text-align: center;
+    font-size: 16px;
+}
+
+.alertClose {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.clear {
+    clear: both;
+}
+
+.info {
+    background-color: #EEE;
+    border: 1px solid #DDD;
+    color: #999;
+}
+
+.success {
+    background-color: #EFE;
+    border: 1px solid #DED;
+    color: #3c763d;
+}
+
+.notice {
+    background-color: #EFF;
+    border: 1px solid #DEE;
+    color: #9AA;
+}
+
+.warning {
+    background-color: #FDF7DF;
+    border: 1px solid #FEEC6F;
+    color: #856404;
+}
+
+.error {
+    background-color: #FEE;
+    border: 1px solid #EDD;
+    color: #A66;
+}
+
+
+
 </style>
 
 <body>
   {% include 'header.html' %}
+  <div class="alertcontainer" id="alerts-container"></div> <!-- Alertlar uchun joy -->
 
   <section class="body">
     <div class="container">
@@ -50,9 +129,19 @@
           {% if messages %}
           <ul class="messages">
             {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
+            <li class="{{ message.tags }}"></li>
+            <label>
+              <input type="checkbox" class="alertCheckbox" autocomplete="off" />
+              <div class="alert success">
+                <span class="alertClose">X</span>
+                <span class="alertText">{{ message }}
+                <br class="clear"/></span>
+              </div>
+            </label>
             {% endfor %}
           </ul>
+          
+          
           {% endif %}
           <div class="addinfo">
             <div class="additional__info" style="position: relative; width: auto; display: flex; gap: 10px;
@@ -66,11 +155,16 @@
                   {% endif %}
                 </a>
               </button>
-              <button>
+              <!-- <button>
                 <a href="{% url 'add_to_cart' article.id %}">
                   <img src="{% static 'img/turinfo/add.png' %}" alt="Add to Cart">
                 </a>
-              </button>
+              </button> -->
+              
+              <button onclick="addToCart({{ article.id }})">
+                <img src="{% static 'img/turinfo/add.png' %}" alt="Add to Cart">
+            </button>
+            
               <button id="pricebtn"><img src="{%  static  'img/turinfo/info.png' %}" alt=""></button>
               
             </div>
@@ -107,6 +201,81 @@ pricebtns.forEach((btn, index) => {
     spans[index].classList.toggle("spanactive");
   });
 });
+  // CSRF token olish funksiyasi
+  function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function addToCart(articleId) {
+            // CSRF tokenni olish
+            const csrftoken = getCookie('csrftoken');
+
+            fetch(`/add_to_cart/${articleId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken, // CSRF token qo'shish
+                },
+                body: JSON.stringify({}) // Tana bo'sh, lekin POST so'rov bo'lishi uchun kerak
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Serverdan noto‘g‘ri javob olindi');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    showAlert('success', 'Mahsulot muvaffaqiyatli qo\'shildi.');
+                } else if (data.status === 'error') {
+                    showAlert('warning', data.message);
+                } else if (data.status === 'info') {
+                    showAlert('error', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Xato:', error);
+                showAlert('error', 'Mahsulotni qo\'shishda xato yuz berdi.');
+            });
+        }
+
+        function showAlert(type, message) {
+            const alertsContainer = document.getElementById('alerts-container');
+            
+            // Xabarlarni qabul qilish uchun HTML yaratish
+            let alertHtml = `
+                <label>
+                    <input type="checkbox" class="alertCheckbox" autocomplete="off" />
+                    <div class="alert ${type}">
+                        <span class="alertClose" onclick="this.parentElement.parentElement.remove();">X</span>
+                        <span class="alertText">${message}
+                        <br class="clear"/></span>
+                    </div>
+                </label>
+            `;
+            
+            // Bo'sh HTML qo'shish
+            alertsContainer.innerHTML += alertHtml;
+
+            // Xabarni avtomatik yo'q qilish uchun vaqt qo'yish (ixtiyoriy)
+            setTimeout(() => {
+                const alertElement = alertsContainer.querySelector('label:last-child');
+                if (alertElement) {
+                    alertElement.remove();
+                }
+            }, 5000); // 5 soniyadan keyin avtomatik ravishda yo'q qilinadi
+        }
   </script>
   <script src="{% static 'app.js' %}"></script>
 
