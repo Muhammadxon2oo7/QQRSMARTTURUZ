@@ -9,24 +9,24 @@
   <title>{{ category.name }}</title>
 </head>
 <style>
+  .addinfo{
+    display: flex;
+    gap: 10px;
+  }
 .spanprice{
   padding: 4px;
   height: 40px;
-  position: absolute;
-  right: -100%;
-  top: 50%;
-  visibility: hidden;
+  padding: 10px;
   transition: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  transform: translateX(-100%) translateY(-50%);
+ 
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   border-radius: 30px;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
-  z-index: -1;
 }
 .spanactive{
-  visibility: visible;
+  display: flex;
   transition: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
 }
@@ -54,23 +54,26 @@
             {% endfor %}
           </ul>
           {% endif %}
-          <div class="additional__info" style="position: relative; width: auto; display: flex; gap: 10px;
-          justify-content: flex-start;">
-            <button>
-              <a href="{% url 'like_article' article.id %}">
-                {% if article.id in user_likes %}
-                <img src="{% static 'img/turinfo/heart_red.png' %}" alt="Unlike">
-                {% else %}
-                <img src="{% static 'img/turinfo/heart.png' %}" alt="Like">
-                {% endif %}
-              </a>
-            </button>
-            <button>
-              <a href="{% url 'add_to_cart' article.id %}">
-                <img src="{% static 'img/turinfo/add.png' %}" alt="Add to Cart">
-              </a>
-            </button>
-            <button id="pricebtn"><img src="{%  static  'img/turinfo/info.png' %}" alt=""></button>
+          <div class="addinfo">
+            <div class="additional__info" style="position: relative; width: auto; display: flex; gap: 10px;
+            justify-content: flex-start;">
+              <button>
+                <a href="{% url 'like_article' article.id %}">
+                  {% if article.id in user_likes %}
+                  <img src="{% static 'img/turinfo/heart_red.png' %}" alt="Unlike">
+                  {% else %}
+                  <img src="{% static 'img/turinfo/heart.png' %}" alt="Like">
+                  {% endif %}
+                </a>
+              </button>
+              <button>
+                <a href="{% url 'add_to_cart' article.id %}">
+                  <img src="{% static 'img/turinfo/add.png' %}" alt="Add to Cart">
+                </a>
+              </button>
+              <button id="pricebtn"><img src="{%  static  'img/turinfo/info.png' %}" alt=""></button>
+              
+            </div>
             <span id="spanprice" class="spanprice">{{ article.price }} $</span>
           </div>
         </div>

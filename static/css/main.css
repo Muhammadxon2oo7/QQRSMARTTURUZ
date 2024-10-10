@@ -1324,9 +1324,8 @@ hr {
   color: #ffffff;
 }
 .pakets .container .content .cards__wrapper .cardd .apply__btn {
-  width: 100%;
+  
   height: 60px;
-  background-color: dodgerblue;
   border: none;
   cursor: pointer;
 }
@@ -1424,7 +1423,7 @@ hr {
     color: #161515;
   }
   .pakets .container .content .cards__wrapper .cardd .apply__btn {
-    width: 70px;
+    width: 100px;
     height: 100%;
     background-color: #9BBAD3;
     border: none;
