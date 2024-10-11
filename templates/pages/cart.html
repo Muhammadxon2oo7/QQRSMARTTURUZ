@@ -21,6 +21,7 @@
     swiper-slide {
         background-position: center;
         background-size: cover;
+        margin-bottom:60px;
     }
 
     swiper-slide img {
@@ -48,13 +49,13 @@
                 <swiper-container class="mySwiper" direction="vertical" pagination="true" pagination-clickable="true">
                     
                         {% for item in cart_items %}
-                    <swiper-slide>
+                    <swiper-slide >
                         <li style=" display: flex; flex-wrap: wrap;
                         align-items: center;
-                        justify-content: center;">
+                        justify-content: center; margin-bottom: 10px;">
                             <h2 style="width: 100%;">{{ item.article.title }}</h2>
-                        <p style="width: 100%;">{{ item.article.text }}</p>
-                        <button style="border: none; background-color: darkred; outline: none;
+                            <p style="width: 100%;">{{ item.article.text }}</p>
+                        <button style="margin-bottom: 10px; border: none; background-color: darkred; outline: none;
                         height: 40px;
                         width: 100px; border-radius: 8px; cursor: pointer;"><a style="color: #fff;" href="{% url 'remove_from_cart' item.article.id %}" class="btn btn-danger">remove</a></button>
                         </li>

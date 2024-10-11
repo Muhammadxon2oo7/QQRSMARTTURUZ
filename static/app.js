@@ -208,7 +208,10 @@ const translations = {
     "contactpl":"Bog'lanish",
     "replyc":"Javob berish",
     "demosite":"Ushbu sayt test rejimida ishlamoqda va shu saytdagi barcha contentlar to'liq tasdiqlanmagan",
-    "txtarea":"Sharhingizni kiriting..."
+    "txtarea":"Sharhingizni kiriting...",
+    "success": "Mahsulot muvaffaqiyatli qo'shildi.",
+    "error": "Mahsulotni qo'shishda xato yuz berdi.",
+    "warning": "Bu kategoriyadan ko'p mahsulot qo'sha olmaysiz.",
   },
   "en": {
     "greeting": "Welcome to Karakalpakstan",
@@ -239,7 +242,10 @@ const translations = {
     "contactpl":"Contact",
     "replyc":"Reply",
     "demosite":"This site is in beta mode and all content has not been fully verified.",
-    "txtarea":"Enter your comment..."
+    "txtarea":"Enter your comment...",
+    "success": "The item has been added successfully.",
+    "error": "An error occurred while adding the item.",
+    "warning": "You cannot add more items from this category.",
   },
   "ru": {
     "greeting": "Добро пожаловать в Каракалпакстан.",
@@ -271,9 +277,91 @@ const translations = {
     "replyc":"Oтветить",
     "demosite":"Этот сайт находится в тестовом режиме, и все его содержимое не полностью проверено.",
     "txtarea":"Введите свой комментарий...",
+    "success": "Товар успешно добавлен.",
+    "error": "Произошла ошибка при добавлении товара.",
+    "warning": "Вы не можете добавить больше товаров из этой категории."
   }
 };
 
+let lang ='ru'
+
+// CSRF token olish funksiyasi
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+
+// Add to Cart funksiyasi
+function addToCart(articleId) {
+  // CSRF tokenni olish
+  const csrftoken = getCookie('csrftoken');
+
+  fetch(`/add_to_cart/${articleId}/`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken, // CSRF token qo'shish
+      },
+      body: JSON.stringify({}) // Tana bo'sh, lekin POST so'rov bo'lishi uchun kerak
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error(translations[lang].error);
+      }
+      return response.json();
+  })
+  .then(data => {
+      if (data.status === 'success') {
+          showAlert('success', translations[lang].success);
+      } else if (data.status === 'error') {
+          showAlert('warning', translations[lang].warning);
+      } else if (data.status === 'info') {
+          showAlert('error', data.message);
+      }
+  })
+  .catch(error => {
+      console.error('Xato:', error);
+      showAlert('error', translations[lang].error);
+  });
+}
+
+// Xabarlarni ko'rsatish funksiyasi
+function showAlert(type, message) {
+  const alertsContainer = document.getElementById('alerts-container');
+  
+  // Xabarlarni qabul qilish uchun HTML yaratish
+  let alertHtml = `
+      <label>
+          <input type="checkbox" class="alertCheckbox" autocomplete="off" />
+          <div class="alert ${type}">
+              <span class="alertClose" onclick="this.parentElement.parentElement.remove();">X</span>
+              <span class="alertText">${message}
+              <br class="clear"/></span>
+          </div>
+      </label>
+  `;
+  
+  // Bo'sh HTML qo'shish
+  alertsContainer.innerHTML += alertHtml;
+
+  // Xabarni avtomatik yo'q qilish uchun vaqt qo'yish (ixtiyoriy)
+  setTimeout(() => {
+      const alertElement = alertsContainer.querySelector('label:last-child');
+      if (alertElement) {
+          alertElement.remove();
+      }
+  }, 5000); // 5 soniyadan keyin avtomatik ravishda yo'q qilinadi
+}
 
 function changeLanguage(lang) {
   // Local storage ga tanlangan tilni saqlash
