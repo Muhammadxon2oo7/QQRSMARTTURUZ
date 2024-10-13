@@ -57,7 +57,7 @@
                             <p style="width: 100%;">{{ item.article.text }}</p>
                         <button style="margin-bottom: 10px; border: none; background-color: darkred; outline: none;
                         height: 40px;
-                        width: 100px; border-radius: 8px; cursor: pointer;"><a style="color: #fff;" href="{% url 'remove_from_cart' item.article.id %}" class="btn btn-danger">remove</a></button>
+                        width: 100px; border-radius: 8px; cursor: pointer;"><a id="remove" style="color: #fff;" href="{% url 'remove_from_cart' item.article.id %}" class="btn btn-danger">remove</a></button>
                         </li>
                     </swiper-slide>
                     {% endfor %}
@@ -83,7 +83,7 @@
                         </div>
                         <div class="time">
                             <img src="{% static 'img/turinfo/money.png' %}" alt="">
-                            <p>Total: {{ cart_data.total_price }} $</p>
+                            <p>{{ cart_data.total_price }} $</p>
                         </div>
                         <div class="time">
                             <img src="{% static 'img/turinfo/eye.png' %}" alt="">

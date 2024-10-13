@@ -1,12 +1,16 @@
-<!DOCTYPE html>
+<!DOCTYPE html>{% load static %}
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Ro'yxatdan O'tish</title>
 </head>
 <style>
+  header{
+    display: none;
+  }
   body {
     display: flex;
     justify-content: center;
@@ -262,26 +266,11 @@
 </style>
 
 <body>
-  <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet'
-    type='text/css'>
-  <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
-
-  <div class="testbox">
-    <h1>Registration</h1>
-    <form action="{% url 'register' %}" method="post">
-      
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn">Register</button>
-    </form>
-
-
-  </div> -->
-  <!-- <script src="./app.js"></script> -->
+  {% include 'header.html' %}
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
   <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
   <div class="testbox">
-    <h1>Ro'yhatdan o'tish</h1>
+    <h1 id="register__title">Ro'yhatdan o'tish</h1>
     {% if error %}
         <div style="color: red;">{{ error }}</div> 
     {% endif %}
@@ -290,9 +279,9 @@
         <hr>
       <div name="accounts" id="id_accounts_type" class="accounttype">
         <input type="radio" value="person" id="radioOne" name="accounts_type"/>
-        <label for="radioOne" class="radio" chec>Jismoniy</label>
+        <label id="Physical" for="radioOne" class="radio" chec>Jismoniy</label>
         <input type="radio" value="company" id="radioTwo" name="accounts_type" required/>
-        <label for="radioTwo" class="radio">Yuridik</label>
+        <label id="Legal" for="radioTwo" class="radio">Yuridik</label>
       </div>
     <hr>
     <label id="icon" for="name"><i class="icon-user"></i></label>
@@ -304,18 +293,19 @@
     <input type="password" name="password" id="id_password" placeholder="Parol" minlength="6" required/>
     <div class="gender" name="gender" id="id_gender">
       <input type="radio" value="male" id="male" name="gender"/>
-      <label for="male" class="radio" chec>Erkak</label>
-      <input type="radio" value="female" id="female" name="gender" required/>
-      <label for="female" class="radio" >Ayol</label> 
+      <label id="malee" for="male" class="radio" chec>Erkak</label>
+      <input id="female" type="radio" value="female" id="female" name="gender" required/>
+      <label id="femalee" for="female" class="radio" >Ayol</label> 
      </div> 
      <div class="regbtn__Wrapper">
-      <p>Ro'yhatdan o'tish orqali bizningqoidalarga roziligingizni bildirasiz.</p>
-     <button href="./login.html" class="btn" type="submit">Ro'yhatdan o'tish</button>
+      <p id="terms">Ro'yhatdan o'tish orqali bizningqoidalarga roziligingizni bildirasiz.</p>
+     <button id="registerb" href="./login.html" class="btn" type="submit">Ro'yhatdan o'tish</button>
      </div>
-     <a class="reglog" href="{% url 'login' %}">Kirish</a>
+     <a class="reglog" id="loginlink" href="{% url 'login' %}">Kirish</a>
     </form>
   </div>
 
+  <script src="{% static 'app.js' %}"></script>
 </body>
 
 </html>
