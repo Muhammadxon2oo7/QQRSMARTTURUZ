@@ -1,10 +1,9 @@
 //
-
-
-
-
-
-
+window.addEventListener('load', () => {
+  const savedLanguage = localStorage.getItem('selectedLanguage') || 'uz'; // Default tili 'uz'
+  changeLanguage(savedLanguage);  // Tarjima funksiyasini ishga tushirish
+  updateFlag(savedLanguage); // Til bayrog'ini yangilash
+});
 
 document.addEventListener('DOMContentLoaded', function () {
   const cards = document.querySelectorAll('.card');
@@ -178,7 +177,7 @@ btnlang.addEventListener('click', (event) => {
   }
 });
 
-const translations = {
+var translations = {
   "uz": {
     "greeting": "Qoraqalpog'istonga xush kelibsiz.",
     "welcome": "O'zingiz uchun yangi madaniyatni kashf eting.",
@@ -202,13 +201,32 @@ const translations = {
     "dKitob": "Kitob va Jurnallar",
     "dstatistika": "Statistika",
     "secure": "2024 © Barcha huquqlar himoyalangan",
-    "requests":"Savol va Takliflar",
-    "day":"Kun",
-    "places":"ta bo'sh joy",
-    "contactpl":"Bog'lanish",
-    "replyc":"Javob berish",
-    "demosite":"Ushbu sayt test rejimida ishlamoqda va shu saytdagi barcha contentlar to'liq tasdiqlanmagan",
-    "txtarea":"Sharhingizni kiriting..."
+    "requests": "Savol va Takliflar",
+    "day": "Kun",
+    "places": "ta bo'sh joy",
+    "contactpl": "Bog'lanish",
+    "replyc": "Javob berish",
+    "demosite": "Ushbu sayt test rejimida ishlamoqda va shu saytdagi barcha contentlar to'liq tasdiqlanmagan",
+    "txtarea": "Sharhingizni kiriting...",
+    "success": "Mahsulot muvaffaqiyatli qo'shildi.",
+    "error": "Mahsulotni qo'shishda xato yuz berdi.",
+    "warning": "Bu kategoriyadan ko'p mahsulot qo'sha olmaysiz.",
+    "already": "Bu mahsulot qo'shilgan",
+    "remove": "o`chirish",
+    "register__title": "Ro'yhatdan o'tish",
+    "Physical": "Jismoniy",
+    "Legal": "Yuridik",
+    "username": "ism",
+    "email": "Elektron pochta",
+    "id_password": "Parol",
+    "male": "Erkak",
+    "female": "Ayol",
+    "terms": "Ro'yhatdan o'tish orqali bizningqoidalarga roziligingizni bildirasiz.",
+    "registerb": "Ro'yhatdan o'tish",
+    "loginlink": "Kirish",
+    "forgotp":"Parolni unutdingizmi?",
+    "tasdiqlashkodi":"Tasdiqlash kodi",
+    "tasdiqlash":"Tasdiqlash"
   },
   "en": {
     "greeting": "Welcome to Karakalpakstan",
@@ -233,13 +251,32 @@ const translations = {
     "dKitob": "Books and Magazines",
     "dstatistika": "Statistics",
     "secure": "2024 © All Rights Reserved",
-    "requests":"Questions and Suggestions",
-    "day":"Day",
-    "places":"spaces",
-    "contactpl":"Contact",
-    "replyc":"Reply",
-    "demosite":"This site is in beta mode and all content has not been fully verified.",
-    "txtarea":"Enter your comment..."
+    "requests": "Questions and Suggestions",
+    "day": "Day",
+    "places": "spaces",
+    "contactpl": "Contact",
+    "replyc": "Reply",
+    "demosite": "This site is in beta mode and all content has not been fully verified.",
+    "txtarea": "Enter your comment...",
+    "success": "The item has been added successfully.",
+    "error": "An error occurred while adding the item.",
+    "warning": "You cannot add more items from this category.",
+    "already": "This product has been added",
+    "remove": "remove",
+    "register__title": "Sign up",
+    "Physical": "Physical",
+    "Legal": "Legal",
+    "username": "Name",
+    "email": "Email",
+    "id_password": "Password",
+    "male": "Male",
+    "female": "Female",
+    "terms": "By registering, you agree to our terms.",
+    "registerb": "Register",
+    "loginlink": "Log in",
+    "forgotp":"Forgot your password?",
+    "tasdiqlashkodi":"Confirmation code",
+    "tasdiqlash":"Confirm"
   },
   "ru": {
     "greeting": "Добро пожаловать в Каракалпакстан.",
@@ -264,17 +301,34 @@ const translations = {
     "dKitob": "Книги и журналы",
     "dstatistika": "Статистика",
     "secure": "2024 © Все права защищены",
-    "requests":"Вопросы и предложения",
-    "day":"День",
-    "places":"Mест",
-    "contactpl":"Cвязаться",
-    "replyc":"Oтветить",
-    "demosite":"Этот сайт находится в тестовом режиме, и все его содержимое не полностью проверено.",
-    "txtarea":"Введите свой комментарий...",
+    "requests": "Вопросы и предложения",
+    "day": "День",
+    "places": "Mест",
+    "contactpl": "Cвязаться",
+    "replyc": "Oтветить",
+    "demosite": "Этот сайт находится в тестовом режиме, и все его содержимое не полностью проверено.",
+    "txtarea": "Введите свой комментарий...",
+    "success": "Товар успешно добавлен.",
+    "error": "Произошла ошибка при добавлении товара.",
+    "warning": "Вы не можете добавить больше товаров из этой категории.",
+    "already": "Этот товар был добавлен",
+    "remove": "удалить",
+    "register__title": "Регистрация",
+    "Physical": "Физический",
+    "Legal": "Юридический",
+    "username": "Имя",
+    "email": "Электронная почта",
+    "id_password": "Пароль",
+    "male": "Мужской",
+    "female": "Женский",
+    "terms": "Регистрируясь, вы соглашаетесь с нашими условиями.",
+    "registerb": "Регистрация",
+    "loginlink": "Вход",
+    "forgotp":"Забыли пароль?",
+    "tasdiqlashkodi":"Код подтверждения",
+    "tasdiqlash":"Подтверждение"
   }
 };
-
-
 function changeLanguage(lang) {
   // Local storage ga tanlangan tilni saqlash
   localStorage.setItem('selectedLanguage', lang);
@@ -283,7 +337,7 @@ function changeLanguage(lang) {
     document.getElementById('languageInput').value = lang; // Tanlangan tilni yozish
     localStorage.setItem('languageSet', lang); // Tilni saqlab qo'yish
     document.getElementById('languageForm').submit(); // Formani yuborish
-}
+  }
 
   if (translations[lang]) {
     let bannerText = document.getElementById("bannertxt");
@@ -430,38 +484,106 @@ function changeLanguage(lang) {
     if (secure) {
       secure.textContent = translations[lang].secure;
     }
-    let requests=document.getElementById("requests")
-    if(requests){
-      requests.textContent=translations[lang].requests;
+    let requests = document.getElementById("requests")
+    if (requests) {
+      requests.textContent = translations[lang].requests;
     }
-    let day=document.getElementById("day")
-    if(day){
-      day.textContent=translations[lang].day;
+    let day = document.getElementById("day")
+    if (day) {
+      day.textContent = translations[lang].day;
     }
-    let places=document.getElementById("places")
-    if(places){
-      places.textContent=translations[lang].places;
+    let places = document.getElementById("places")
+    if (places) {
+      places.textContent = translations[lang].places;
     }
-    let contactpl=document.getElementById("contactpl")
-    if(contactpl){
-      contactpl.textContent=translations[lang].contactpl;
+    let contactpl = document.getElementById("contactpl")
+    if (contactpl) {
+      contactpl.textContent = translations[lang].contactpl;
     }
-    let demosite=document.getElementById("demosite")
-    if(demosite){
-      demosite.textContent=translations[lang].demosite;
+    let demosite = document.getElementById("demosite")
+    if (demosite) {
+      demosite.textContent = translations[lang].demosite;
     }
     let replycElements = document.querySelectorAll("#replyc");
-    
+
     if (replycElements.length > 0) {
-        replycElements.forEach(element => {
-            element.textContent = translations[lang].replyc;
-        });
+      replycElements.forEach(element => {
+        element.textContent = translations[lang].replyc;
+      });
     }
     let txtarea = document.getElementById("txtarea");
     if (txtarea) {
-      txtarea.placeholder = `${translations[lang].txtarea}`; 
+      txtarea.placeholder = `${translations[lang].txtarea}`;
+    }
+    let remove = document.getElementById("remove");
+    if (remove) {
+      remove.textContent = `${translations[lang].remove}`;
+    }
+    let register__title = document.getElementById("register__title");
+    if (register__title) {
+      register__title.textContent = `${translations[lang].register__title}`;
+    }
+    let Physical = document.getElementById("Physical");
+    if (Physical) {
+      Physical.textContent = `${translations[lang].Physical}`;
+    }
+    let Legal = document.getElementById("Legal");
+    if (Legal) {
+      Legal.textContent = `${translations[lang].Legal}`;
+    }
+    let username = document.getElementById("username");
+    if (username) {
+      username.placeholder = `${translations[lang].username}`;
+    }
+    let email = document.getElementById("email");
+    if (email) {
+      email.placeholder = `${translations[lang].email}`;
+    }
+    let id_password = document.getElementById("id_password");
+    if (id_password) {
+      id_password.placeholder = `${translations[lang].id_password}`;
+    }
+    let male = document.getElementById("malee");
+    if (male) {
+      male.textContent = `${translations[lang].male}`;
+    }
+    let female = document.getElementById("femalee");
+    if (female) {
+      female.textContent = `${translations[lang].female}`;
+    }
+    let terms = document.getElementById("terms");
+    if (terms) {
+      terms.textContent = `${translations[lang].terms}`;
+    }
+    let forgotp = document.getElementById("forgotp");
+    if (forgotp) {
+      forgotp.textContent = `${translations[lang].forgotp}`;
     }
 
+    let registerb = document.querySelectorAll("#registerb");
+    if(registerb){
+      registerb.forEach(function (element) {
+        element.textContent = `${translations[lang].registerb}`;
+      });
+    }
+    
+    let loginlink = document.querySelectorAll("#loginlink");
+    if(loginlink){
+      loginlink.forEach(function (element) {
+        element.textContent = `${translations[lang].loginlink}`;
+      });
+    }
+    
+    let tasdiqlashkodi = document.getElementById("tasdiqlashkodi");
+    if (tasdiqlashkodi) {
+      tasdiqlashkodi.textContent = `${translations[lang].tasdiqlashkodi}`;
+    }
+    let tasdiqlash = document.getElementById("tasdiqlash");
+    if (tasdiqlash) {
+      tasdiqlash.textContent = `${translations[lang].tasdiqlash}`;
+    }
+    
+    
   } else {
     console.error("Til mavjud emas: " + lang);
   }
@@ -475,14 +597,102 @@ function changeLanguage(lang) {
 function updateFlag(lang) {
   // Global flagMap obyektidan foydalanamiz
   const flagImage = document.getElementById("langimg");
-  
+
   if (flagMap[lang]) {
-      // Agar manzil mavjud bo'lsa, flag tasviri yangilanadi
-      flagImage.src = flagMap[lang];
+    // Agar manzil mavjud bo'lsa, flag tasviri yangilanadi
+    flagImage.src = flagMap[lang];
   } else {
-      console.error("Flag image for selected language not found: " + lang);
+    console.error("Flag image for selected language not found: " + lang);
   }
 }
+
+
+// CSRF token olish funksiyasi
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+// Add to Cart funksiyasi
+function addToCart(articleId) {
+  let lang = localStorage.getItem('selectedLanguage')
+  // CSRF tokenni olish
+  const csrftoken = getCookie('csrftoken');
+
+  fetch(`/add_to_cart/${articleId}/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrftoken, // CSRF token qo'shish
+    },
+    body: JSON.stringify({}) // Tana bo'sh, lekin POST so'rov bo'lishi uchun kerak
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(translations[lang].error);
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.status === 'success') {
+        showAlert('success', translations[lang].success);
+        console.log(translations.ru.success);
+
+      } else if (data.status === 'error') {
+        showAlert('warning', translations[lang].warning);
+        console.log(translations.ru.warning);
+
+      } else if (data.status === 'info') {
+        showAlert('error', translations[lang].already);
+        console.log(' nimaaaaaaaaaaa');
+
+      }
+    })
+    .catch(error => {
+
+      showAlert('error', translations[lang].error);
+    });
+}
+
+// Xabarlarni ko'rsatish funksiyasi
+function showAlert(type, message) {
+  const alertsContainer = document.getElementById('alerts-container');
+
+  // Xabarlarni qabul qilish uchun HTML yaratish
+  let alertHtml = `
+      <label>
+          <input type="checkbox" class="alertCheckbox" autocomplete="off" />
+          <div class="alert ${type}">
+              <span class="alertClose" onclick="this.parentElement.parentElement.remove();">X</span>
+              <span class="alertText">${message}
+              <br class="clear"/></span>
+          </div>
+      </label>
+  `;
+
+  // Bo'sh HTML qo'shish
+  alertsContainer.innerHTML += alertHtml;
+
+  // Xabarni avtomatik yo'q qilish uchun vaqt qo'yish (ixtiyoriy)
+  setTimeout(() => {
+    const alertElement = alertsContainer.querySelector('label:last-child');
+    if (alertElement) {
+      alertElement.remove();
+    }
+  }, 5000); // 5 soniyadan keyin avtomatik ravishda yo'q qilinadi
+}
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const paths = document.querySelectorAll('svg path');
@@ -538,7 +748,7 @@ document.addEventListener("DOMContentLoaded", function () {
       this.style.strokeWidth = '';
 
       // Info panelni reset qilish
-    
+
     });
   });
 });

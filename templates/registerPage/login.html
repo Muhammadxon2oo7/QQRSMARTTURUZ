@@ -7,6 +7,9 @@
   <title>Ro'yxatdan O'tish</title>
 </head>
 <style>
+  header{
+    display: none;
+  }
   body {
     display: flex;
     justify-content: center;
@@ -267,12 +270,13 @@
 </style>
 
 <body>
+  {% include 'header.html' %}
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet'
     type='text/css'>
   <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
 
   <div class="testbox">
-    <h1>Kirish</h1>
+    <h1 id="loginlink">Kirish</h1>
     {% if error %}
     <div style="color: red;">{{ error }}</div> <!-- Xatoliklar uchun joy -->
     {% endif %}
@@ -281,12 +285,12 @@
       <label id="icon" for="email"><i class="icon-envelope"></i></label>
       <input type="email" name="email" id="email" placeholder="Elektron pochta" required />
       <label id="icon" for="password"><i class="icon-shield"></i></label>
-      <input type="password" name="password" id="password" placeholder="Parol" required />
+      <input type="password" name="password" id="id_password" placeholder="Parol" required />
       <div class="btnwrap">
-        <button type="submit" class="button">Kirish</button>
-      <a class="forgotp" href="{% url 'password_reset' %}">Parolni unutdingizmi?</a>
+        <button type="submit" class="button" id="loginlink">Kirish</button>
+      <a class="forgotp" id="forgotp" href="{% url 'password_reset' %}">Parolni unutdingizmi?</a>
       </div>
-      <a class="logreg"  href="{% url 'register' %}">Ro'yhatdan o'tish</a>
+      <a class="logreg" id="registerb"  href="{% url 'register' %}">Ro'yhatdan o'tish</a>
 
     </form>
 
