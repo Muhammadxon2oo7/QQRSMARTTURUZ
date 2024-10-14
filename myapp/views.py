@@ -51,15 +51,6 @@ def rate_place(request, place_id):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     return HttpResponseRedirect('/login/')
 
-# def like_article(request, article_id):
-#     article = get_object_or_404(Article, id=article_id)
-#     like, created = Like.objects.get_or_create(user=request.user, article=article)
-    
-#     if not created:
-#         like.liked = not like.liked
-#         like.save()
-
-#     return redirect('articles_by_category', category_id=article.category.id)
 @csrf_exempt
 def like_article(request, article_id):
     if request.method == 'POST':
@@ -75,30 +66,6 @@ def like_article(request, article_id):
     return JsonResponse({'error': 'Yaroqsiz so‘rov'}, status=400)
 
 
-# def add_to_cart(request, article_id):
-#     article = get_object_or_404(Article, id=article_id)
-
-#     if request.user.is_authenticated:
-#         cart, created = Cart.objects.get_or_create(user=request.user)
-#         category = article.category
-#         category_article_count = CartItem.objects.filter(cart=cart, article__category=category).count()
-#         max_articles_per_category = category.max_articles_per_category
-#         if category_article_count >= max_articles_per_category:
-#             messages.error(request, f"Bu kategoriyadan {max_articles_per_category} ta mahsulotdan ko'p qo'sha olmaysiz.")
-#         else:
-#             # Agar bunday kart item mavjud bo'lmasa, yangi qo'shish
-#             cart_item_exists = CartItem.objects.filter(cart=cart, article=article).exists()
-
-#             if not cart_item_exists:
-#                 CartItem.objects.create(cart=cart, article=article)
-#                 messages.success(request, "Mahsulot savatchaga qo'shildi.")
-#             else:
-#                 messages.info(request, "Bu mahsulot allaqachon savatchada mavjud.")
-
-#     else:
-#         return redirect('login')
-
-#     return redirect('cart_view')
 
 @csrf_exempt
 def add_to_cart(request, article_id):
@@ -155,8 +122,6 @@ def cart_view(request):
             'places_count': cart.places_count,
             'views': cart.views,
             'phone_number': cart.phone_number,
-            # 'average_rating': cart.average_rating(),
-            # 'rating_count': cart.rating_count(),
             'total_price': total_price
         }
 
@@ -168,6 +133,7 @@ def cart_view(request):
     else:
         return redirect('login')
 
+@csrf_exempt
 def turinfo(request, place_id):
     places = get_object_or_404(TourismPlace, id=place_id)
     stars = range(5, 0, -1)
@@ -176,30 +142,81 @@ def turinfo(request, place_id):
     comments = places.comments.filter(parent=None)[::-1] 
     comments_with_stars = []
 
-
     for comment in comments:
         user_rating = Rating.objects.filter(user=comment.user, place=places).first()
         if user_rating:
-            stars_list = list(range(user_rating.stars))  # Convert range to list
+            stars_list = list(range(user_rating.stars))
             comments_with_stars.append((comment.id, stars_list))
         else:
             comments_with_stars.append((comment.id, [])) 
-    print(comments_with_stars)
+
+    if request.method == 'GET' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        comments_data = []
+
+        # Asosiy sharhlar va javoblarni iteratsiya qilish
+        for comment in comments:
+            comment_data = {
+                'id': comment.id,
+                'user': comment.user.first_name,
+                'text': comment.text,
+                'created_at': comment.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                'stars': [len(stars) for cid, stars in comments_with_stars if cid == comment.id],
+                'replies': []
+            }
+
+            # Javoblarni qo'shish
+            for reply in comment.replies.all():
+                reply_data = {
+                    'id': reply.id,
+                    'user': reply.user.first_name,
+                    'text': reply.text,
+                    'created_at': reply.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                }
+                comment_data['replies'].insert(0, reply_data)
+
+            comments_data.append(comment_data)
+
+        return JsonResponse({
+            'success': True,
+            'comments': comments_data[::-1],
+            'current_user': request.user.first_name if request.user.is_authenticated else None
+        })
+
+
     if request.method == 'POST':
         text = request.POST.get('comment')
         parent_id = request.POST.get('parent_id', None)
-        if request.user.is_authenticated  and text:
-            Comment.objects.create(
+        if request.user.is_authenticated and text:
+            user_rating = Rating.objects.filter(user=request.user, place=places).first()
+            stars_count = user_rating.stars if user_rating else 0
+            new_comment = Comment.objects.create(
                 place=places,
                 user=request.user,
                 text=text,
                 created_at=timezone.now(),
                 parent_id=parent_id if parent_id != '' else None,
             )
-            return redirect('turinfo', place_id=place_id)
+            return JsonResponse({
+                'success': True,
+                'comment': {
+                    'id': new_comment.id,
+                    'user': new_comment.user.first_name,
+                    'text': new_comment.text,
+                    'created_at': new_comment.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                    'stars': stars_count,
+                    'parent_id': parent_id,
+                },
+                'current_user': request.user.first_name,
+            })
         else:
-            return redirect('register/')  
-    return render(request, 'pages/turinfo.html', {'places': places, 'comments': comments, 'stars': stars, 'comments_with_stars': comments_with_stars})
+            return JsonResponse({'success': False}, status=400)
+
+    return render(request, 'pages/turinfo.html', {
+        'places': places, 
+        'comments': comments, 
+        'stars': stars, 
+        'comments_with_stars': comments_with_stars
+    })
 
 from django.contrib.auth import get_user_model
 User = get_user_model()

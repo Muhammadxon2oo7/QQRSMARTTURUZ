@@ -175,12 +175,6 @@ class Cart(models.Model):
     views = models.PositiveIntegerField(default=0)  
     phone_number = models.CharField(max_length=20, blank=True, null=True) 
 
-    # def average_rating(self):
-    #     return self.ratings.aggregate(Avg('stars'))['stars__avg'] or 0
-    
-    # def rating_count(self):
-    #     return self.ratings.count()
-
     def __str__(self):
         return self.title  
 

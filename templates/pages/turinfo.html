@@ -92,10 +92,11 @@
 
 
                 <h3 class="h3chat" id="requests">Savol va takliflar</h3>
-                <ul class="scrollul">
-                    {% for comment in comments %}
+                {% if comments %}
+                <ul class="scrollul" id="comment-list">
+                    <!-- {% for comment in comments %}
                     <li class="{% if comment.user == request.user %}bright{% else %}bleft{% endif %}">
-                        <div class="comment__text__wrapper ">
+                        <div class="comment__text__wrapper">
                             <div class="allcomment__wrapper">
                                 <div
                                     class="comment__buble {% if comment.user == request.user %}right{% else %}left{% endif %}">
@@ -105,41 +106,47 @@
                                     <span>⭐</span>
                                     {% endfor %}
                                     {% endif %}
-                                    {% endfor %}        
+                                    {% endfor %}
                                     <h3 class="comment__users__name">{{ comment.user.first_name }}</h3>
                                     <p class="comment__text">{{ comment.text }}</p>
-                                    <button class="replybtn" onclick="setParentId('{{ comment.id }}');"><a
-                                            href="#txtarea" id="replyc">Javob berish</a></button>
+                                    <button class="replybtn" onclick="setParentId('{{ comment.id }}');">
+                                        <a href="#txtarea" id="replyc">Javob berish</a>
+                                    </button>
                                 </div>
                                 <p class="comment__time">{{ comment.created_at }}</p>
                                 {% for reply in comment.replies.all %}
-                            </div>
-                            <div class="allcomment__wrapper ">
-                                <div
-                                    class="comment__buble color {% if comment.user == request.user %}right{% else %}left{% endif %}">
-                                    <h2 class="comment__users__name">{{ reply.user.first_name }}</h2>
-                                    <p class="comment__text">{{ reply.text }}</p>
+                                <div class="allcomment__wrapper ">
+                                    <div
+                                        class="comment__buble color {% if comment.user == request.user %}right{% else %}left{% endif %}">
+                                        <h2 class="comment__users__name">{{ reply.user.first_name }}</h2>
+                                        <p class="comment__text">{{ reply.text }}</p>
+                                    </div>
+                                    <p class="comment__time">{{ reply.created_at }}</p>
                                 </div>
-                                <p class="comment__time">{{ reply.created_at }}</p>
                                 {% endfor %}
                             </div>
                         </div>
                     </li>
                     {% empty %}
                     <li class="nocomment">Hozircha sharhlar mavjud emas.</li>
-                    {% endfor %}
+                    {% endfor %} -->
                 </ul>
+                {% else %}
+                <p class="nocomment">Hozircha sharhlar mavjud emas 135.</p>
+                {% endif %}
                 {% if user.is_authenticated %}
                 <div class="comment-wrapper">
-                    <form method="POST">
+                    <form id="comment-form" method="POST" action="{% url 'turinfo' places.id %}">
                         {% csrf_token %}
                         <textarea id="txtarea" name="comment" rows="4" cols="50" placeholder="Sharhingizni kiriting..."
                             required></textarea><br>
                         <input type="hidden" name="parent_id" id="parent_id" value="">
-                        <button type="submit"><img class="btnimg" src="{% static 'img/turinfo/send.png' %}" alt="">
+                        <button type="submit">
+                            <img class="btnimg" src="{% static 'img/turinfo/send.png' %}" alt="">
                         </button>
                     </form>
                 </div>
+
                 {% else %}
                 <p>Sharh qoldirish uchun <a style="color: blue;" href="{% url 'register' %}">tizimga kiring</a>.</p>
                 {% endif %}
@@ -151,6 +158,152 @@
     </section>
     {% include 'footer.html' %}
     <script>
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const commentForm = document.getElementById('comment-form');
+            const commentList = document.getElementById('comment-list');
+
+            if (!commentList) {
+                console.error('Comment list element not found');
+                return;
+            }
+            if (commentList.innerHTML.trim() === '') {
+                commentList.innerHTML = '';
+            }
+
+            // Yangi sharhlarni yuklash funksiyasi
+            function loadComments() {
+                fetch(commentForm.action, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Yangi sharhlarni tozalash va yangilash
+                            commentList.innerHTML = '';
+
+                            data.comments.forEach(comment => {
+                                const newComment = document.createElement('li');
+                                newComment.className = comment.user === data.current_user ? 'bright' : 'bleft';
+                                newComment.id = `comment-${comment.id}`;
+
+                                let starsHTML = '';
+                                if (comment.stars) {
+                                    for (let i = 0; i < comment.stars; i++) {
+                                        starsHTML += '<span>⭐</span>';
+                                    }
+                                }
+
+                                newComment.innerHTML = `
+                        <div class="comment__text__wrapper">
+                            <div class="allcomment__wrapper">
+                                <div class="comment__buble ${comment.user === data.current_user ? 'right' : 'left'}">
+                                    ${starsHTML}
+                                    <h3 class="comment__users__name">${comment.user}</h3>
+                                    <p class="comment__text">${comment.text}</p>
+                                    <button class="replybtn" onclick="setParentId('${comment.id}');">
+                                        <a href="#txtarea" id="replyc">Javob berish</a>
+                                    </button>
+                                </div>
+                                <sub class="comment__time">${comment.created_at}</sub>
+                                <div class="allcomment__wrapper" id="replies-${comment.id}">
+                                    <!-- Bu joyga javoblar keladi -->
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                                commentList.prepend(newComment);
+
+                                // Javoblarni ro'yxatga qo'shish
+                                comment.replies.forEach(reply => {
+                                    const replyHTML = `
+                                <div class="comment__buble ${reply.user === data.current_user ? 'right' : 'left'}">
+                                    <h3 class="comment__users__name">${reply.user}</h3>
+                                    <p class="comment__text">${reply.text}</p>
+                                </div>
+                                <sub class="comment__time">${reply.created_at}</sub>
+                        `;
+
+                                    // Javoblarni tegishli joyga qo'shish
+                                    const replyContainer = document.getElementById(`replies-${comment.id}`);
+                                    replyContainer.insertAdjacentHTML('beforeend', replyHTML);
+                                });
+                            });
+                        } else {
+                            alert('Sharhlarni yuklashda xato yuz berdi.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Xato:', error);
+                    });
+            }
+            function setParentId(parentId) {
+                const parentInput = document.getElementById('parent_id');
+                parentInput.value = parentId;
+            }
+
+            // Form yuborilgandan so'ng sharhlarni yangilash
+
+            commentForm.addEventListener('submit', function (event) {
+                event.preventDefault(); // Sahifani yangilanishini to'xtatish
+
+                const formData = new FormData(commentForm);
+
+                fetch(commentForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCookie('csrftoken'),  // CSRF token olish
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        if (data.success) {
+
+
+                            loadComments();
+
+                            commentForm.reset();
+
+                            document.getElementById('parent_id').value = '';
+                        } else {
+                            alert('Sharh qoldirishda xato yuz berdi.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Xato:', error);
+                    });
+            });
+
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            // Sharhlarni avtomatik yangilash uchun interval
+            setInterval(loadComments, 1000);
+
+            loadComments();  // Sahifa yuklanganda sharhlarni olish
+        });
+
 
         let header = document.getElementById('main-header')
         header.style.backgroundColor = "#9BBAD3"

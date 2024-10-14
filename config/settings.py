@@ -26,7 +26,7 @@ import os
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['qqrsmarttur.uz', 'www.qqrsmarttur.uz', '176.221.29.142', '127.0.0.1', '192.168.117.89']
+ALLOWED_HOSTS = ['qqrsmarttur.uz', 'www.qqrsmarttur.uz', '176.221.29.142', '127.0.0.1',]
 
 
 # Application definition

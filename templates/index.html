@@ -427,43 +427,6 @@
                     {% endfor %}
 
 
-
-                    <!-- {% for place in places %}
-                    <div class="card">
-                        <a href="{% url 'turinfo' place.id %}">
-                           
-                        <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" space-between="30"
-                            effect="fade" loop="true" autoplay-delay="2500" autoplay-disable-on-interaction="false"
-                            mousewheel="true" navigation="true">
-                            {% for image in place.images.all %}
-                            <swiper-slide>
-            
-            
-                                <img class="swiperr-slide" src="{{ image.image.url }}" alt="">
-            
-            
-                            </swiper-slide> 
-                            {% endfor %}
-            
-                        </swiper-container>
-
-                            <div class="info">
-                                <h2 class="title">{{ place.title }}</h2>
-                                <p style="display: flex;
-                                align-items: center;"><img style="width: 20px; height: 20px; margin-right: 5px;" src="{% static 'img/turinfo/star.png' %}" alt="">{{ place.average_rating }} ({{ place.rating_count }} ovoz)</p>
-                               
-                                <br>
-                                <p class="dec">{{ place.text }}</p>
-                            </div>
-                            <button class="apply__btn"
-                                style="display: flex; align-items: center; justify-content: center;">
-                                <a href="tel:+998971971283">
-                                    <img src="{% static 'img/applytur.png' %}" alt="">
-                                </a>
-                            </button>
-                        </a>
-                    </div>
-                    {% endfor %} -->
                 </div>
             </div>
         </div>
