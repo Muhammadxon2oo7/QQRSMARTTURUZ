@@ -18,6 +18,7 @@ from . import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('index.html', views.home, name='index'),  
+    path('profile/', views.profile, name='profile'),
     path('search/', views.home, name='search'),
     path('register/', views.RegisterView.as_view(), name='register'),
     path('login', views.LoginView.as_view(), name='login'),
@@ -27,7 +28,6 @@ urlpatterns = [
     path('logout', views.LogoutView.as_view(), name='logout'), 
     path('category/<int:category_id>/', views.articles_by_category, name='articles_by_category'),
     path('turinfo/<int:place_id>/', views.turinfo, name='turinfo'),
-    # path('get-comments/<int:place_id>/', views.get_comments, name='get_comments'),
     path('rate_place/<int:place_id>/', views.rate_place, name='rate_place'),
     path('like/<int:article_id>/', views.like_article, name='like_article'),
     path('add_to_cart/<int:article_id>/', views.add_to_cart, name='add_to_cart'),

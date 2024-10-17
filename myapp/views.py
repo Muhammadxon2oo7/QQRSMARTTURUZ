@@ -370,3 +370,36 @@ class LogoutView(View):
         def get(self, request):
             logout(request)
             return redirect('index.html')
+
+
+
+
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+
+@login_required
+def profile(request):
+    user = request.user
+
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        password = request.POST.get('password')
+        gender = request.POST.get('gender')
+        accounts_type = request.POST.get('accounts_type')
+
+        if first_name:
+            user.first_name = first_name
+        if password:
+            user.set_password(password)
+        if gender:
+            user.gender = gender
+        if accounts_type:
+            user.accounts_type = accounts_type
+
+        user.save()
+        update_session_auth_hash(request, user)  # Keeps the user logged in after password change
+        messages.success(request, 'Profile updated successfully.')
+        return redirect('profile')
+
+    return render(request, 'pages/account.html', {'user': user})

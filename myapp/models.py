@@ -176,7 +176,7 @@ class Cart(models.Model):
     phone_number = models.CharField(max_length=20, blank=True, null=True) 
 
     def __str__(self):
-        return self.title  
+        return f"{self.user}"  
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)

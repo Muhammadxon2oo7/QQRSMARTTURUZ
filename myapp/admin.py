@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Category, Article, User, TourismPlace, TourismPlaceImage, Reclama, Comment, Rating, Like
+from .models import Category, Article, User, TourismPlace, TourismPlaceImage, Reclama, Comment, Rating, Like, Cart, CartItem
 
 # Category uchun Admin panelini sozlash
 class CategoryAdmin(admin.ModelAdmin):
@@ -29,13 +29,11 @@ class TourismPlaceImageInline(admin.TabularInline):
     extra = 1  # Bo'sh rasm kiritish maydonlari soni (kerak bo'lsa, ko'paytirishingiz mumkin)
 
 
-# TourismPlace modelini admin interfeysida sozlash
 class TourismPlaceAdmin(admin.ModelAdmin):
-    list_display = ('title', 'price', 'duration', 'places_count')  # Admin interfeysida ko'rinadigan maydonlar (list view uchun)
-    inlines = [TourismPlaceImageInline]  # Rasmlarni qo'shish uchun inline modelni qo'shish
+    list_display = ('title', 'price', 'duration', 'places_count') 
+    inlines = [TourismPlaceImageInline]  
 
 
-# Reclamani admin panaliga qo'shish uchun
 class ReclamaAdmin(admin.ModelAdmin):
     list_display = ('title',)
     list_filter = ('title',)
@@ -55,7 +53,25 @@ class LikeAdmin(admin.ModelAdmin):
     list_display = ('article', 'user', 'liked',)
     list_filter = ('article', 'user', 'liked',)
     search_fields = ('article', 'user', 'liked',)
+    
 
+
+class CartItemInline(admin.TabularInline):
+    model = CartItem
+    extra = 0 
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    list_display = ('user', 'id',  'created_at', 'duration', 'places_count', 'views', 'phone_number')
+    list_filter = ('user', 'created_at', 'phone_number')
+    search_fields = ('user__username', 'id', 'user', 'phone_number')  
+    inlines = [CartItemInline]
+
+@admin.register(CartItem)
+class CartItemAdmin(admin.ModelAdmin):
+    list_display = ('cart', 'id',  'article', 'added_at')
+    list_filter = ('added_at', 'cart',)
+    search_fields = ('id', 'cart__user__username', 'article__title')
 
 # Modellarni admin saytiga ro'yxatdan o'tkazish
 admin.site.register(TourismPlace, TourismPlaceAdmin)

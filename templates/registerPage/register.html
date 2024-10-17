@@ -8,9 +8,10 @@
   <title>Ro'yxatdan O'tish</title>
 </head>
 <style>
-  header{
+  header {
     display: none;
   }
+
   body {
     display: flex;
     justify-content: center;
@@ -46,7 +47,7 @@
     margin: 0;
   }
 
-  
+
   fieldset,
   img {
     border: 0
@@ -210,15 +211,17 @@
     margin-top: 20px;
   }
 
-  .regbtn__Wrapper{
+  .regbtn__Wrapper {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    
+
   }
-  .regbtn__Wrapper p{
+
+  .regbtn__Wrapper p {
     cursor: pointer;
   }
+
   .btn {
     font-size: 14px;
     font-weight: 600;
@@ -251,57 +254,60 @@
     box-shadow: none;
 
   }
-.reglog{
-  width: 100%;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-  color: #9BBAD3;
-  text-decoration: none;
-}
-.reglog:hover{
-  color:#228ee7 ;
-}
+
+  .reglog {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    color: #9BBAD3;
+    text-decoration: none;
+  }
+
+  .reglog:hover {
+    color: #228ee7;
+  }
 </style>
 
 <body>
   {% include 'header.html' %}
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet'
+    type='text/css'>
   <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
   <div class="testbox">
     <h1 id="register__title">Ro'yhatdan o'tish</h1>
     {% if error %}
-        <div style="color: red;">{{ error }}</div> 
+    <div style="color: red;">{{ error }}</div>
     {% endif %}
     <form action="{% url 'register' %}" method="post">
       {% csrf_token %}
-        <hr>
+      <hr>
       <div name="accounts" id="id_accounts_type" class="accounttype">
-        <input type="radio" value="person" id="radioOne" name="accounts_type"/>
+        <input type="radio" value="person" id="radioOne" name="accounts_type" />
         <label id="Physical" for="radioOne" class="radio" chec>Jismoniy</label>
-        <input type="radio" value="company" id="radioTwo" name="accounts_type" required/>
+        <input type="radio" value="company" id="radioTwo" name="accounts_type" required />
         <label id="Legal" for="radioTwo" class="radio">Yuridik</label>
       </div>
-    <hr>
-    <label id="icon" for="name"><i class="icon-user"></i></label>
-    <input type="text" name="first_name" id="username" placeholder="Ism" required/> 
-    <label id="icon" for="name"><i class="icon-envelope "></i></label>
-    <input type="email" name="email" id="email" placeholder="Elektron pochta" required/>
-    
-    <label id="icon" for="name"><i class="icon-shield"></i></label>
-    <input type="password" name="password" id="id_password" placeholder="Parol" minlength="6" required/>
-    <div class="gender" name="gender" id="id_gender">
-      <input type="radio" value="male" id="male" name="gender"/>
-      <label id="malee" for="male" class="radio" chec>Erkak</label>
-      <input id="female" type="radio" value="female" id="female" name="gender" required/>
-      <label id="femalee" for="female" class="radio" >Ayol</label> 
-     </div> 
-     <div class="regbtn__Wrapper">
-      <p id="terms">Ro'yhatdan o'tish orqali bizningqoidalarga roziligingizni bildirasiz.</p>
-     <button id="registerb" href="./login.html" class="btn" type="submit">Ro'yhatdan o'tish</button>
-     </div>
-     <a class="reglog" id="loginlink" href="{% url 'login' %}">Kirish</a>
+      <hr>
+      <label id="icon" for="name"><i class="icon-user"></i></label>
+      <input type="text" name="first_name" id="username" placeholder="Ism" required />
+      <label id="icon" for="name"><i class="icon-envelope "></i></label>
+      <input type="email" name="email" id="email" placeholder="Elektron pochta" required />
+
+      <label id="icon" for="name"><i class="icon-shield"></i></label>
+      <input type="password" name="password" id="id_password" placeholder="Parol" minlength="6" required />
+      <div class="gender" name="gender" id="id_gender">
+        <input type="radio" value="male" id="male" name="gender" />
+        <label id="malee" for="male" class="radio" chec>Erkak</label>
+        <input id="female" type="radio" value="female" id="female" name="gender" required />
+        <label id="femalee" for="female" class="radio">Ayol</label>
+      </div>
+      <div class="regbtn__Wrapper">
+        <p id="terms">Ro'yhatdan o'tish orqali bizningqoidalarga roziligingizni bildirasiz.</p>
+        <button id="registerb" href="./login.html" class="btn" type="submit">Ro'yhatdan o'tish</button>
+      </div>
+      <a class="reglog" id="loginlink" href="{% url 'login' %}">Kirish</a>
     </form>
   </div>
 

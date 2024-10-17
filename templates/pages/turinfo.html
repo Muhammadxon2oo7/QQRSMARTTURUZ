@@ -94,42 +94,7 @@
                 <h3 class="h3chat" id="requests">Savol va takliflar</h3>
                 {% if comments %}
                 <ul class="scrollul" id="comment-list">
-                    <!-- {% for comment in comments %}
-                    <li class="{% if comment.user == request.user %}bright{% else %}bleft{% endif %}">
-                        <div class="comment__text__wrapper">
-                            <div class="allcomment__wrapper">
-                                <div
-                                    class="comment__buble {% if comment.user == request.user %}right{% else %}left{% endif %}">
-                                    {% for comment_id, stars in comments_with_stars %}
-                                    {% if comment_id == comment.id %}
-                                    {% for star in stars %}
-                                    <span>⭐</span>
-                                    {% endfor %}
-                                    {% endif %}
-                                    {% endfor %}
-                                    <h3 class="comment__users__name">{{ comment.user.first_name }}</h3>
-                                    <p class="comment__text">{{ comment.text }}</p>
-                                    <button class="replybtn" onclick="setParentId('{{ comment.id }}');">
-                                        <a href="#txtarea" id="replyc">Javob berish</a>
-                                    </button>
-                                </div>
-                                <p class="comment__time">{{ comment.created_at }}</p>
-                                {% for reply in comment.replies.all %}
-                                <div class="allcomment__wrapper ">
-                                    <div
-                                        class="comment__buble color {% if comment.user == request.user %}right{% else %}left{% endif %}">
-                                        <h2 class="comment__users__name">{{ reply.user.first_name }}</h2>
-                                        <p class="comment__text">{{ reply.text }}</p>
-                                    </div>
-                                    <p class="comment__time">{{ reply.created_at }}</p>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </li>
-                    {% empty %}
-                    <li class="nocomment">Hozircha sharhlar mavjud emas.</li>
-                    {% endfor %} -->
+
                 </ul>
                 {% else %}
                 <p class="nocomment">Hozircha sharhlar mavjud emas 135.</p>
@@ -249,6 +214,10 @@
             }
 
             // Form yuborilgandan so'ng sharhlarni yangilash
+            const formData = new FormData(commentForm);
+            for (var pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
 
             commentForm.addEventListener('submit', function (event) {
                 event.preventDefault(); // Sahifani yangilanishini to'xtatish
@@ -265,14 +234,13 @@
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
+                        // console.log(data);
                         if (data.success) {
-
-
+                            console.log('Form submit event triggered');
+                            console.log('Form data:', formData);
+                            console.log('Fetch request sent to:', commentForm.action);
                             loadComments();
-
                             commentForm.reset();
-
                             document.getElementById('parent_id').value = '';
                         } else {
                             alert('Sharh qoldirishda xato yuz berdi.');
@@ -299,7 +267,7 @@
             }
 
             // Sharhlarni avtomatik yangilash uchun interval
-            setInterval(loadComments, 1000);
+            setInterval(loadComments, 3000);
 
             loadComments();  // Sahifa yuklanganda sharhlarni olish
         });
