@@ -139,6 +139,18 @@ def turinfo(request, place_id):
     stars = range(5, 0, -1)
     places.views += 1
     places.save() 
+
+    # Agar hech qanday sharh yo'q bo'lsa, birinchi sharhni yaratish
+    if not places.comments.exists():
+        admin_user = User.objects.filter(is_superuser=True).first()
+        if admin_user:
+            Comment.objects.create(
+                place=places,
+                user=admin_user,
+                text="Bu joy haqidagi fikringizni yozing.",
+                created_at=timezone.now(),
+            )
+
     comments = places.comments.filter(parent=None)[::-1] 
     comments_with_stars = []
 
@@ -375,31 +387,39 @@ class LogoutView(View):
 
 
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
 
 @login_required
 def profile(request):
-    user = request.user
-
     if request.method == 'POST':
-        first_name = request.POST.get('first_name')
-        password = request.POST.get('password')
-        gender = request.POST.get('gender')
-        accounts_type = request.POST.get('accounts_type')
+        user = request.user
+        first_name = request.POST.get('first_name', user.first_name)
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        gender = request.POST.get('gender', user.gender)
+        accounts_type = request.POST.get('accounts_type', user.accounts_type)
 
-        if first_name:
-            user.first_name = first_name
-        if password:
-            user.set_password(password)
-        if gender:
-            user.gender = gender
-        if accounts_type:
-            user.accounts_type = accounts_type
+        # Parolni tekshirish va yangilash
+        if old_password and new_password:
+            if user.check_password(old_password):
+                user.set_password(new_password)
+                user.save()  # Parolni yangilab saqlash
+                update_session_auth_hash(request, user)  # Foydalanuvchini sessiyadan chiqarib yubormaslik uchun
+                messages.success(request, "Parol muvaffaqiyatli yangilandi!")
+            else:
+                messages.error(request, "Eski parol noto'g'ri, iltimos, qayta tekshiring!")
+                return redirect('profile')  # Xatolik bo'lsa qayta yuklash
 
+        # Boshqa ma'lumotlarni yangilash
+        user.first_name = first_name
+        user.gender = gender
+        user.accounts_type = accounts_type
         user.save()
-        update_session_auth_hash(request, user)  # Keeps the user logged in after password change
-        messages.success(request, 'Profile updated successfully.')
-        return redirect('profile')
+        messages.success(request, "Ma'lumotlar muvaffaqiyatli yangilandi!")
 
-    return render(request, 'pages/account.html', {'user': user})
+        return redirect('profile')  # Ma'lumotlar muvaffaqiyatli saqlangandan keyin qayta yuklash
+
+    return render(request, 'pages/account.html', {'user': request.user})
+
+

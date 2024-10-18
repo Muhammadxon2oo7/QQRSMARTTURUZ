@@ -1,177 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Profile</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background: #180835;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #180835;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
 
-        html,
-        body {
-            height: 100%;
-        }
+      html,
+      body {
+        height: 100%;
+      }
 
+      .card {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 30px;
+        padding: 10px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+        width: 70%;
+        height: 480px;
+        background: #12c2e9;
+        background: linear-gradient(to right, #f64f59, #c471ed, #12c2e9);
+      }
+
+      .left-container {
+        background: linear-gradient(to right, #434343, #000000);
+        flex: 1;
+        max-width: 30%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 430px;
+        padding: 10px;
+        margin: 30px;
+        border-radius: 20px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+
+      .right-container {
+        background: linear-gradient(to left, #434343, #000000);
+        flex: 1;
+        max-width: 70%;
+        height: 430px;
+        padding: 10px;
+        margin: 20px;
+        border-radius: 30px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+
+      @media only screen and (max-width: 860px) {
         .card {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 30px;
-            padding: 10px;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-            width: 70%;
-            height: 480px;
-            background: #12c2e9;
-            background: linear-gradient(to right, #f64f59, #c471ed, #12c2e9);
+          flex-direction: column;
+          margin: 10px;
+          height: auto;
+          width: 90%;
         }
 
         .left-container {
-            background: linear-gradient(to right, #434343, #000000);
-            flex: 1;
-            max-width: 30%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 430px;
-            padding: 10px;
-            margin: 30px;
-            border-radius: 20px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+          flex: 1;
+          max-width: 100%;
         }
+      }
 
-        .right-container {
-            background: linear-gradient(to left, #434343, #000000);
-            flex: 1;
-            max-width: 70%;
-            height: 430px;
-            padding: 10px;
-            margin: 20px;
-            border-radius: 30px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        }
+      img {
+        width: 200px;
+        height: 200px;
+        max-width: 200px;
+        border-radius: 50%;
+        margin: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
 
-        @media only screen and (max-width: 860px) {
-            .card {
-                flex-direction: column;
-                margin: 10px;
-                height: auto;
-                width: 90%;
-            }
+      h2 {
+        font-size: 24px;
+        margin-bottom: 5px;
+      }
 
-            .left-container {
-                flex: 1;
-                max-width: 100%;
-            }
-        }
+      h3 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 5px;
+      }
 
-        img {
-            width: 200px;
-            height: 200px;
-            max-width: 200px;
-            border-radius: 50%;
-            margin: 10px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        }
+      .gradienttext {
+        background-image: linear-gradient(to right, #ee00ff 0%, #fbff00 100%);
+        color: transparent;
+        -webkit-background-clip: text;
+      }
 
-        h2 {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
+      p {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: aliceblue;
+      }
 
-        h3 {
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
 
-        .gradienttext {
-            background-image: linear-gradient(to right, #ee00ff 0%, #fbff00 100%);
-            color: transparent;
-            -webkit-background-clip: text;
-        }
+      td {
+        padding: 10px;
+        border: none;
+        color: white;
+      }
 
-        p {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: aliceblue;
-        }
+      td:first-child {
+        font-weight: bold;
+      }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+      .credit a {
+        text-decoration: none;
+        color: #fff;
+        font-weight: 800;
+      }
 
-        td {
-            padding: 10px;
-            border: none;
-            color: white;
-        }
+      .credit {
+        color: #fff;
+        text-align: center;
+        margin-top: 10px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+      }
 
-        td:first-child {
-            font-weight: bold;
-        }
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
 
-        .credit a {
-            text-decoration: none;
-            color: #fff;
-            font-weight: 800;
-        }
+    .modal-content {
+        background-color: #fff;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 8px;
+        width: 80%;
+        max-width: 500px;
+    }
 
-        .credit {
-            color: #fff;
-            text-align: center;
-            margin-top: 10px;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-        }
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover, .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="card">
-        <div class="left-container">
-            <img src="https://cdn.vectorstock.com/i/1000v/92/16/default-profile-picture-avatar-user-icon-vector-46389216.jpg" alt="Profile Image">
-            <h2 class="gradienttext">{{ user.first_name }} {{ user.last_name }}</h2>
-            <p>{{ user.accounts_type }}</p>
-        </div>
-        <div class="right-container">
-            <h3 class="gradienttext">Profile Details</h3>
-            <table>
-                <tr>
-                    <td>Name:</td>
-                    <td>{{ user.first_name }} {{ user.last_name }}</td>
-                </tr>
-                <tr>
-                    <td>Email:</td>
-                    <td>{{ user.email }}</td>
-                </tr>
-                <tr>
-                    <td>Gender:</td>
-                    <td>{{ user.gender }}</td>
-                </tr>
-                <tr>
-                    <td>Account Type:</td>
-                    <td>{{ user.accounts_type }}</td>
-                </tr>
-                <tr>
-                    <td>Joined On:</td>
-                    <td>{{ user.date_joined }}</td>
-                </tr>
-            </table>
-            <div class="credit">Made with <span style="color:tomato;font-size:20px;">❤ </span> by <a
-                    href="https://www.learningrobo.com/">Learning Robo</a></div>
+      <div class="left-container">
+        <img
+          src="https://cdn.vectorstock.com/i/1000v/92/16/default-profile-picture-avatar-user-icon-vector-46389216.jpg"
+          alt="Profile Image"
+        />
+        <h2 class="gradienttext">{{ user.first_name }} {{ user.last_name }}</h2>
+        <p>{{ user.accounts_type }}</p>
+        <!-- Edit tugmasi -->
+<button onclick="openModal()">Ma'lumotlarni tahrirlash</button>
+      </div>
+      <div class="right-container">
+        <h3 class="gradienttext">Profile Details</h3>
+        <table>
+          <tr>
+            <td>Name:</td>
+            <td>{{ user.first_name }} {{ user.last_name }}</td>
+          </tr>
+          <tr>
+            <td>Email:</td>
+            <td>{{ user.email }}</td>
+          </tr>
+          <tr>
+            <td>Gender:</td>
+            <td>{{ user.gender }}</td>
+          </tr>
+          <tr>
+            <td>Account Type:</td>
+            <td>{{ user.accounts_type }}</td>
+          </tr>
+          <tr>
+            <td>Joined On:</td>
+            <td>{{ user.date_joined }}</td>
+          </tr>
+          <tr>
+            <td>
+              {% if messages %}
+    <div>
+        {% for message in messages %}
+            <div style="color: red;" class="{% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <!-- Edit modalni boshlanishi -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Ma'lumotlarni tahrirlash</h2>
+            <form id="editForm" method="post">
+                {% csrf_token %}
+                <label for="first_name">Ism:</label>
+                <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" required>
+
+                <label for="old_password">Eski parol:</label>
+                <input type="password" id="old_password" name="old_password" placeholder="Eski parolni kiriting">
+
+                <label for="new_password">Yangi parol:</label>
+                <input type="password" id="new_password" name="new_password" placeholder="Yangi parolni kiriting">
+
+                <label for="gender">Jins:</label>
+                <select id="gender" name="gender">
+                    <option value="male" {% if user.gender == 'male' %}selected{% endif %}> Erkak </option>
+                    <option value="female" {% if user.gender == 'female' %}selected{% endif %}> Ayol </option>
+                </select>
+
+                <label for="accounts_type">Turi:</label>
+                <select id="accounts_type" name="accounts_type">
+                    <option value="company" {% if user.accounts_type == 'company' %}selected{% endif %}>Kompaniya</option>
+                    <option value="person" {% if user.accounts_type == 'person' %}selected{% endif %}>Shaxs</option>
+                </select>
+
+                <button type="submit">Saqlash</button>
+            </form>
         </div>
     </div>
-</body>
+    
+
+    <script>
+        function openModal() {
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+    </script>
+
+  </body>
 
 </html>
