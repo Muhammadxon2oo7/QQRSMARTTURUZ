@@ -132,7 +132,8 @@ def cart_view(request):
         })
     else:
         return redirect('login')
-
+def profile_view(request):
+    return render(request, 'profile.html')
 @csrf_exempt
 def turinfo(request, place_id):
     places = get_object_or_404(TourismPlace, id=place_id)

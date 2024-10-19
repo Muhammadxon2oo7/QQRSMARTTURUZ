@@ -109,7 +109,7 @@
                         <div id="showadm" class="admin__tools">
                             <img src="{% static  'img/register.svg' %}" alt="">
                             <div id="admoption" class="admin__opntool">
-                                <p class="username">{{user.first_name}}</p>
+                                <p class="username"><a style="width: 100%;" href="{% url 'profile' %}">{{user.first_name}}</a></p>
                                 <button>
                                     <a style="width: 100%; height: 100%;
                                     text-align: center;" class="loga" href="{% url 'logout' %}">log</a>
